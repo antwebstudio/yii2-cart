@@ -8,13 +8,13 @@ use yii\web\Response;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
-use common\modules\event\models\Event;
-use common\modules\cart\models\Cart;
-use common\modules\cart\models\CartItem;
-use common\modules\cart\models\CartForm;
-use common\modules\token\models\Token;
-use common\modules\order\models\Order;
-use common\modules\order\models\OrderForm;
+use ant\event\models\Event;
+use ant\cart\models\Cart;
+use ant\cart\models\CartItem;
+use ant\cart\models\CartForm;
+use ant\token\models\Token;
+use ant\order\models\Order;
+use ant\order\models\OrderForm;
 
 class CartItemController extends Controller
 {

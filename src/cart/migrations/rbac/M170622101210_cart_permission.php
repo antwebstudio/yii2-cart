@@ -3,7 +3,7 @@
 namespace ant\cart\migrations\rbac;
 
 use yii\db\Schema;
-use common\rbac\Migration;
+use ant\rbac\Migration;
 use ant\rbac\Role;
 use frontend\modules\cart\controllers\DefaultController;
 

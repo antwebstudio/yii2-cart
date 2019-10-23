@@ -4,7 +4,7 @@ namespace backend\modules\cart\controllers;
 
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
-use common\modules\cart\models\Cart;
+use ant\cart\models\Cart;
 
 /**
  * Default controller for the `cart` module

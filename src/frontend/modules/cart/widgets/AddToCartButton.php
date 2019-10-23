@@ -4,7 +4,7 @@ namespace frontend\modules\cart\widgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use common\modules\ecommerce\models\AddToCartForm;
+use ant\ecommerce\models\AddToCartForm;
 
 class AddToCartButton extends \yii\base\Widget {
 	

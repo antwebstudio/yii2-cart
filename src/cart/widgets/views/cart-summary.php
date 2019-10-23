@@ -8,7 +8,7 @@ use ant\helpers\Currency;
 
 \ant\cart\widgets\CartListAsset::register($this);
 ?>
-<?php \common\widgets\JsBlock::begin() ?>
+<?php \ant\widgets\JsBlock::begin() ?>
 <script>
 	(function($) {
 		var settings = <?= Json::encode($this->context->options) ?>;
@@ -17,7 +17,7 @@ use ant\helpers\Currency;
 		
 	})(jQuery);
 </script>
-<?php \common\widgets\JsBlock::end() ?>
+<?php \ant\widgets\JsBlock::end() ?>
 
 <style>
 .summaryPrice{

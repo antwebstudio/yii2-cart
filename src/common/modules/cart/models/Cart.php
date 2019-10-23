@@ -1,19 +1,19 @@
 <?php
 
-namespace common\modules\cart\models;
+namespace ant\cart\models;
 
 use Yii;
 use \yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use common\helpers\Currency;
-use common\helpers\DateTime;
-use common\interfaces\Expirable;
-use common\modules\payment\models\Billable;
-use common\modules\token\models\Token;
-use common\modules\user\models\User;
-use common\modules\order\models\Order;
-use common\modules\cart\components\CartableInterface;
-use common\modules\discount\helpers\Discount;
+use ant\helpers\Currency;
+use ant\helpers\DateTime;
+use ant\interfaces\Expirable;
+use ant\payment\models\Billable;
+use ant\token\models\Token;
+use ant\user\models\User;
+use ant\order\models\Order;
+use ant\cart\components\CartableInterface;
+use ant\discount\helpers\Discount;
 use ant\cart\models\CartOption;
 
 /**
@@ -58,35 +58,35 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
         return
         [
 			'configurable' => [
-				'class' => 'common\behaviors\ConfigurableModelBehavior',
+				'class' => 'ant\behaviors\ConfigurableModelBehavior',
 			],
             [
 				'class' => \yii\behaviors\BlameableBehavior::className(),
 				'updatedByAttribute' => null,
 			],
             [
-				'class' => \common\behaviors\TimestampBehavior::className(),
+				'class' => \ant\behaviors\TimestampBehavior::className(),
 			],
             [
-				'class' => \common\behaviors\IpBehavior::className(),
+				'class' => \ant\behaviors\IpBehavior::className(),
 				'updatedIpAttribute' => null,
 			],
 			[
-				'class' => \common\behaviors\DuplicatableBehavior::className(),
+				'class' => \ant\behaviors\DuplicatableBehavior::className(),
 				'relations' => [
 					'cartItems' => [],
 				],
 			],
 			[
-                'class' => 'common\behaviors\DateTimeAttributeBehavior',
+                'class' => 'ant\behaviors\DateTimeAttributeBehavior',
                 'attributes' => [
 					'created_at', 'updated_at',
 				],
             ],
             [
-                'class' => \common\behaviors\SerializeBehavior::className(),
+                'class' => \ant\behaviors\SerializeBehavior::className(),
                 'attributes' => ['data', 'options'],
-                'serializeMethod' => \common\behaviors\SerializeBehavior::METHOD_JSON,
+                'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
             ],
         ];
     }
@@ -151,7 +151,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 	
 	public static function find() {
-		return new \common\modules\cart\models\query\CartQuery(get_called_class());
+		return new \ant\cart\models\query\CartQuery(get_called_class());
 	}
 	
 	public static function statusOptions() {

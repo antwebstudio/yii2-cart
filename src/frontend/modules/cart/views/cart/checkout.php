@@ -8,7 +8,7 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 
 <?php if (count($cart->cartItems)): ?>
 
-	<?= \common\modules\cart\widgets\CartList::widget([
+	<?= \ant\cart\widgets\CartList::widget([
 		'editable' => false,
 		'cart' => $cart,
 		'buttons' => [

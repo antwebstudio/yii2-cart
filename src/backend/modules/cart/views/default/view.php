@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use common\modules\cart\widgets\CartList;
+use ant\cart\widgets\CartList;
 
 //$this->context->layout = '//main';
 

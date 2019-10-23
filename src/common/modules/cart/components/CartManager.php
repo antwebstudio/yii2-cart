@@ -1,7 +1,7 @@
 <?php
-namespace common\modules\cart\components;
+namespace ant\cart\components;
 use Yii;
-use common\modules\cart\models\Cart;
+use ant\cart\models\Cart;
 
 class CartManager extends \yii\base\Component {
 	public $types;

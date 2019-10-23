@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
-use common\modules\securityMobileApp\models\Customer;
+use ant\securityMobileApp\models\Customer;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\incident\models\Incident */
+/* @var $model ant\incident\models\Incident */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

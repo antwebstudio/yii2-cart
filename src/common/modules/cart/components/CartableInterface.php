@@ -1,8 +1,8 @@
 <?php
-namespace common\modules\cart\components;
+namespace ant\cart\components;
 
 interface CartableInterface {
-	// @return \common\modules\discount\helpers\Discount
+	// @return \ant\discount\helpers\Discount
 	// @return 0 if no discount
 	public function getDiscount();
 	

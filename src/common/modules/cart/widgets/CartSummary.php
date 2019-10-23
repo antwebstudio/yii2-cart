@@ -1,5 +1,5 @@
 <?php
-namespace common\modules\cart\widgets;
+namespace ant\cart\widgets;
 
 use Yii;
 use yii\helpers\ArrayHelper;

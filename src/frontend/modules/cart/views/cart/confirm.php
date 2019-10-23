@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use common\modules\orders\models\Order;
+use ant\orders\models\Order;
 
 $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping Cart');
 $ids = Yii::$app->request->post('cart-item');

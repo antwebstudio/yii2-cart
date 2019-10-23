@@ -1,7 +1,7 @@
 <?php namespace cart;
 
 use UnitTester;
-use common\modules\cart\models\Cart;
+use ant\cart\models\Cart;
 use ant\cart\models\CartOption;
 
 class CartOptionCest
@@ -11,7 +11,7 @@ class CartOptionCest
 		\Yii::configure(\Yii::$app, [
             'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 				],
             ],
         ]);

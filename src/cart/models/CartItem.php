@@ -4,12 +4,12 @@ namespace ant\cart\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use common\helpers\Currency;
-use common\modules\payment\models\PayableItem;
+use ant\helpers\Currency;
+use ant\payment\models\PayableItem;
 use ant\cart\models\Cart;
-use common\modules\product\models\Product;
-use common\modules\ecommerce\models\ProductVariant;
-use common\modules\discount\helpers\Discount;
+use ant\product\models\Product;
+use ant\ecommerce\models\ProductVariant;
+use ant\discount\helpers\Discount;
 use ant\cart\components\CartableInterface as Cartable;
 
 /**
@@ -30,8 +30,8 @@ use ant\cart\components\CartableInterface as Cartable;
  */
 class CartItem extends \yii\db\ActiveRecord implements PayableItem
 {
-	use \common\modules\payment\traits\BillableTrait;
-	use \common\traits\StatusTrait;
+	use \ant\payment\traits\BillableTrait;
+	//use \ant\traits\StatusTrait;
 	
 	public $attachments;
 	public $attachments2;
@@ -54,16 +54,16 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	public function behaviors() {
 		return [
 			[
-				'class' => \common\behaviors\SerializeBehavior::className(),
+				'class' => \ant\behaviors\SerializeBehavior::className(),
 				'attributes' => ['data'],
-				'serializeMethod' => \common\behaviors\SerializeBehavior::METHOD_JSON,
+				'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
 			],
 			[
-				'class' => \common\behaviors\AttachBehaviorBehavior::className(),
+				'class' => \ant\behaviors\AttachBehaviorBehavior::className(),
 				'config' => '@common/config/behaviors.php',
 			],
 			[
-				'class' => \common\behaviors\DuplicatableBehavior::className(),	
+				'class' => \ant\behaviors\DuplicatableBehavior::className(),	
 			],
 		];
 	}
@@ -214,7 +214,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getDiscountAmount() {
-		$discount = new \common\modules\discount\helpers\Discount($this->discount_value, $this->discount_type);
+		$discount = new \ant\discount\helpers\Discount($this->discount_value, $this->discount_type);
 		return $discount->of($this->unitPrice);
 	}
 	
@@ -239,7 +239,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function setDiscount($discount, $discountType = 0) {
-		if ($discount instanceof \common\modules\discount\helpers\Discount) {
+		if ($discount instanceof \ant\discount\helpers\Discount) {
 			$this->discount_value = $discount->value;
 			$this->discount_type = $discount->type;
 		} else {
@@ -249,7 +249,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getDiscount() {
-		return new \common\modules\discount\helpers\Discount($this->discount_value, $this->discount_type);
+		return new \ant\discount\helpers\Discount($this->discount_value, $this->discount_type);
 	}
 	
 	public function deductAvailableQuantity($quantity) {

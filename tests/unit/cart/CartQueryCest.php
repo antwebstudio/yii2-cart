@@ -2,7 +2,7 @@
 namespace cart;
 
 use \UnitTester;
-use common\modules\cart\models\Cart;
+use ant\cart\models\Cart;
 
 class CartQueryCest
 {

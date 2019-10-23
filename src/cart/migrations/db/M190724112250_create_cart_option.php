@@ -2,7 +2,7 @@
 
 namespace ant\cart\migrations\db;
 
-use common\components\Migration;
+use ant\components\Migration;
 
 /**
  * Class M190724112250_create_cart_option

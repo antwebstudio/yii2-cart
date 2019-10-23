@@ -1,7 +1,7 @@
 <?php
-namespace common\modules\cart\models\query;
+namespace ant\cart\models\query;
 
-use common\helpers\DateTime;
+use ant\helpers\DateTime;
 
 class CartQuery extends \yii\db\ActiveQuery {
 	public function active() {

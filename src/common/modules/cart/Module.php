@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart;
+namespace ant\cart;
 
 /**
  * cart module definition class
@@ -13,15 +13,15 @@ class Module extends \yii\base\Module
 	 public function behaviors() {
 		return [
 			'configurable' => [
-				'class' => 'common\behaviors\ConfigurableModuleBehavior',
+				'class' => 'ant\behaviors\ConfigurableModuleBehavior',
 				'formModels' => [
 					'order' => [
-						'class' => 'common\modules\order\models\OrderForm',
+						'class' => 'ant\order\models\OrderForm',
 						
 					],
 					'addToCart' => [
-						'class' => 'common\modules\ecommerce\models\AddToCartForm',
-						'scenario' => \common\modules\ecommerce\models\AddToCartForm::SCENARIO_ADD_TO_CART,
+						'class' => 'ant\ecommerce\models\AddToCartForm',
+						'scenario' => \ant\ecommerce\models\AddToCartForm::SCENARIO_ADD_TO_CART,
 					],
 				],
 			],

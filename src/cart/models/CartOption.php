@@ -13,9 +13,9 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  */
-class CartOption extends \yii\db\ActiveRecord implements \common\modules\payment\models\BillableItem
+class CartOption extends \yii\db\ActiveRecord implements \ant\payment\models\BillableItem
 {
-	use \common\modules\payment\traits\BillableTrait;
+	use \ant\payment\traits\BillableTrait;
 	
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class CartOption extends \yii\db\ActiveRecord implements \common\modules\payment
 	}
 	
 	public function getDiscountedUnitPrice() {
-		return \common\helpers\Currency::rounding($this->getUnitPrice());
+		return \ant\helpers\Currency::rounding($this->getUnitPrice());
 	}
 	
 	public function getQuantity() {

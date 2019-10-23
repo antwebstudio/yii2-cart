@@ -3,11 +3,11 @@
 //use Yii;
 use yii\helpers\Html;
 //use tests\codeception\common\UnitTester;
-use common\behaviors\AttachBehaviorBehavior;
-use common\modules\user\models\User;
-use common\modules\cart\components\CartableInterface;
-use common\modules\cart\models\Cart;
-use common\modules\cart\models\CartItem;
+use ant\behaviors\AttachBehaviorBehavior;
+use ant\user\models\User;
+use ant\cart\components\CartableInterface;
+use ant\cart\models\Cart;
+use ant\cart\models\CartItem;
 
 /**
  * @group cart
@@ -19,7 +19,7 @@ class CartCest
 		\Yii::configure(\Yii::$app, [
             'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 				],
             ],
         ]);
@@ -43,7 +43,7 @@ class CartCest
 		\Yii::configure(\Yii::$app, [
 			'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'default' => [
 							'item' => function($cartItem) {
@@ -80,10 +80,10 @@ class CartCest
 			\Yii::configure(\Yii::$app->discount, [
 				'overrideMethods' => [
 					'getDiscountForForm' => function($formModel) {
-						return \common\modules\discount\helpers\Discount::percent(0);
+						return \ant\discount\helpers\Discount::percent(0);
 					},
 					'getDiscountForCartItem' => function($cartItem) {
-						return \common\modules\discount\helpers\Discount::percent(0);
+						return \ant\discount\helpers\Discount::percent(0);
 					}
 				],
 			]);
@@ -111,7 +111,7 @@ class CartCest
 		\Yii::configure(\Yii::$app, [
 			'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'default' => [
 							'item' => function($cartItem) {
@@ -121,7 +121,7 @@ class CartCest
 					],
 				],
 				'discount' => [
-					'class' => 'common\modules\discount\components\DiscountManager',
+					'class' => 'ant\discount\components\DiscountManager',
 					'overrideMethods' => [
 						'getDiscountForCartItem' => function($cartItem) {
 							// To test discount which depends on cart item's item
@@ -168,7 +168,7 @@ class CartCest
 		$tokenQuery = $cart->tokenQueryParams;
 		
 		$decryptedCartId = $I->invokeMethod($cart, 'decryptId', [$tokenQuery['cart']]);
-		$cart = \common\modules\cart\models\Cart::findOne($decryptedCartId);
+		$cart = \ant\cart\models\Cart::findOne($decryptedCartId);
 
 		$I->assertTrue(isset($cart));
 		$I->assertEquals($cartId, $cart->id);
@@ -213,7 +213,7 @@ class CartCest
 		\Yii::configure(\Yii::$app, [
 			'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'default' => [
 							'item' => function($cartItem) {
@@ -288,7 +288,7 @@ class CartCest
 		\Yii::configure(\Yii::$app, [
 			'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'default' => [
 							'item' => function($cartItem) {
@@ -360,9 +360,9 @@ class CartCestTestCartableItemWithData extends \yii\base\Model implements Cartab
 	}
 }
 
-class CartCestTestCartableItem extends \yii\base\Model implements \common\modules\cart\components\CartableInterface {
+class CartCestTestCartableItem extends \yii\base\Model implements \ant\cart\components\CartableInterface {
 	public function getDiscount() {
-		return new \common\modules\discount\helpers\Discount(20, \common\modules\discount\helpers\Discount::TYPE_PERCENT);
+		return new \ant\discount\helpers\Discount(20, \ant\discount\helpers\Discount::TYPE_PERCENT);
 	}
 	
 	public function getName() {

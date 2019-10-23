@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart\actions;
+namespace ant\cart\actions;
 use yii\base\Action;
 use Yii;
 

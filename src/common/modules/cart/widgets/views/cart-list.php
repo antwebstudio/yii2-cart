@@ -1,7 +1,7 @@
 <?php
 
-use common\helpers\Currency;
-use common\modules\cart\widgets\CartListAsset;
+use ant\helpers\Currency;
+use ant\cart\widgets\CartListAsset;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;

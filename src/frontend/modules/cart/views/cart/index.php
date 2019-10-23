@@ -8,7 +8,7 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 
 <?php if (count($cart->cartItems)): ?>
 	<?php \yii\widgets\Pjax::begin() ?>
-		<?= \common\modules\cart\widgets\CartList::widget([
+		<?= \ant\cart\widgets\CartList::widget([
 			'cart' => $cart,
 		]) ?>
 	<?php \yii\widgets\Pjax::end() ?>

@@ -8,12 +8,12 @@ use yii\web\Response;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
-use common\modules\order\models\Order;
-use common\modules\payment\models\Invoice;
-use common\modules\token\models\Token;
-use common\modules\cart\models\Cart;
-use common\modules\cart\models\CartItem;
-use common\modules\cart\models\CartForm;
+use ant\order\models\Order;
+use ant\payment\models\Invoice;
+use ant\token\models\Token;
+use ant\cart\models\Cart;
+use ant\cart\models\CartItem;
+use ant\cart\models\CartForm;
 
 class CartController extends Controller
 {
@@ -93,7 +93,7 @@ class CartController extends Controller
 		$productId = Yii::$app->request->post('product');
 		$cart = Yii::$app->cart->getLastCart();
 		
-		if (!$cart->removeItem(\common\modules\product\models\Product::findOne($productId))) {
+		if (!$cart->removeItem(\ant\product\models\Product::findOne($productId))) {
 			throw new \Exception('Failed to remove cart item. ');
 		}
 	}

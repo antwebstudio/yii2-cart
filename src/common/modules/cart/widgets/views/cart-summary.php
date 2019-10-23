@@ -4,11 +4,11 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use common\helpers\Currency;
+use ant\helpers\Currency;
 
-\common\modules\cart\widgets\CartListAsset::register($this);
+\ant\cart\widgets\CartListAsset::register($this);
 ?>
-<?php \common\widgets\JsBlock::begin() ?>
+<?php \ant\widgets\JsBlock::begin() ?>
 <script>
 	(function($) {
 		var settings = <?= Json::encode($this->context->options) ?>;
@@ -17,7 +17,7 @@ use common\helpers\Currency;
 		
 	})(jQuery);
 </script>
-<?php \common\widgets\JsBlock::end() ?>
+<?php \ant\widgets\JsBlock::end() ?>
 
 <style>
 .summaryPrice{

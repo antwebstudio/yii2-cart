@@ -1,5 +1,5 @@
 <?php
-namespace common\modules\cart\models\query;
+namespace ant\cart\models\query;
 
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;

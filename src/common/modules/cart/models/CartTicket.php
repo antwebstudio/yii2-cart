@@ -1,13 +1,13 @@
 <?php
-namespace common\modules\cart\models;
+namespace ant\cart\models;
 
 use yii\db\ActiveRecord;
 
-use common\modules\payment\models\PayableItem;
+use ant\payment\models\PayableItem;
 
-use common\modules\event\models\TicketType;
-use common\modules\cart\models\Cart;
-use common\modules\cart\models\query\CartTicketQuery;
+use ant\event\models\TicketType;
+use ant\cart\models\Cart;
+use ant\cart\models\query\CartTicketQuery;
 
 class CartTicket extends ActiveRecord implements PayableItem
 {

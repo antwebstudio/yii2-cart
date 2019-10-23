@@ -1,11 +1,11 @@
 <?php
-namespace common\modules\cart\widgets;
+namespace ant\cart\widgets;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use common\helpers\TemplateHelper;
+use ant\helpers\TemplateHelper;
 
 class CartList extends \yii\base\Widget {
 	public $cart;

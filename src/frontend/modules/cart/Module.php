@@ -5,7 +5,7 @@ namespace frontend\modules\cart;
 /**
  * cart module definition class
  */
-class Module extends \common\modules\cart\Module
+class Module extends \ant\cart\Module
 {
     /**
      * @inheritdoc

@@ -2,10 +2,10 @@
 //namespace tests\codeception\common\cart;
 use yii\helpers\Html;
 //use tests\codeception\common\UnitTester;
-use common\modules\cart\models\Cart;
-use common\modules\cart\models\CartItem;
-use common\modules\discount\helpers\Discount;
-use common\modules\cart\components\CartableInterface;
+use ant\cart\models\Cart;
+use ant\cart\models\CartItem;
+use ant\discount\helpers\Discount;
+use ant\cart\components\CartableInterface;
 
 class CartItemCest
 {
@@ -14,7 +14,7 @@ class CartItemCest
 		\Yii::configure(\Yii::$app, [
             'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'product' => [
 							'item' => function() {

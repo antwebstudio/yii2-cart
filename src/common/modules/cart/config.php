@@ -2,8 +2,8 @@
 
 return [
     'id' => 'cart',
-	'namespace' => 'common\modules\cart',
-    'class' => \common\modules\cart\Module::className(),
+	'namespace' => 'ant\cart',
+    'class' => \ant\cart\Module::className(),
 	'aliases' => [
 		'@ant/cart' => dirname(dirname(dirname(__DIR__))).'/cart',
 	],

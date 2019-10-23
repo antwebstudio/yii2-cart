@@ -2,7 +2,7 @@
 namespace cart;
 
 use \UnitTester;
-use common\modules\cart\models\Cart;
+use ant\cart\models\Cart;
 
 class CartManagerCest
 {
@@ -11,7 +11,7 @@ class CartManagerCest
 		\Yii::configure(\Yii::$app, [
             'components' => [
 				'cart' => [
-					'class' => 'common\modules\cart\components\CartManager',
+					'class' => 'ant\cart\components\CartManager',
 					'types' => [
 						'event' => [
 						],
