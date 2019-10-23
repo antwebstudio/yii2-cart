@@ -1,21 +1,21 @@
 <?php
 
-namespace common\modules\cart\migrations\db;
+namespace ant\cart\migrations\db;
 
 use yii\db\Migration;
 
-class M171215091212_alter_cart extends Migration
+class M180824080554_alter_cart extends Migration
 {
 	protected $tableName = '{{%cart}}';
 	
     public function safeUp()
     {
-		$this->addColumn($this->tableName, 'updated_at', $this->timestamp()->defaultValue(null));
+		$this->addColumn($this->tableName, 'remark', $this->text()->null()->defaultValue(null));
     }
 
     public function safeDown()
     {
-        $this->dropColumn($this->tableName, 'updated_at');
+        $this->dropColumn($this->tableName, 'remark');
     }
 
     /*
@@ -27,7 +27,7 @@ class M171215091212_alter_cart extends Migration
 
     public function down()
     {
-        echo "M171215091212_alter_cart cannot be reverted.\n";
+        echo "M180824080554_alter_cart cannot be reverted.\n";
 
         return false;
     }

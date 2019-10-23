@@ -1,10 +1,10 @@
 <?php
 
-namespace common\modules\cart\migrations\rbac;
+namespace ant\cart\migrations\rbac;
 
 use yii\db\Schema;
 use common\rbac\Migration;
-use common\rbac\Role;
+use ant\rbac\Role;
 use frontend\modules\cart\controllers\DefaultController;
 
 class M170622101210_cart_permission extends Migration

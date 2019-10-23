@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart\migrations\db;
+namespace ant\cart\migrations\db;
 
 use yii\db\Migration;
 

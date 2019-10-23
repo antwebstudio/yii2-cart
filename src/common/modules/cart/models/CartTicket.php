@@ -11,6 +11,11 @@ use common\modules\cart\models\query\CartTicketQuery;
 
 class CartTicket extends ActiveRecord implements PayableItem
 {
+	public function init() {
+		if (YII_DEBUG && YII_LOCALHOST) throw new \Exception('DEPRECATED'); // 2019-10-23
+		return parent::init();
+	}
+	
     public static function tableName()
     {
         return '{{%cart_ticket}}';
