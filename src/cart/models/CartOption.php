@@ -3,6 +3,7 @@
 namespace ant\cart\models;
 
 use Yii;
+use ant\payment\interfaces\BillableItem;
 
 /**
  * This is the model class for table "cart_option".
@@ -13,7 +14,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  */
-class CartOption extends \yii\db\ActiveRecord implements \ant\payment\models\BillableItem
+class CartOption extends \yii\db\ActiveRecord implements BillableItem
 {
 	use \ant\payment\traits\BillableTrait;
 	

@@ -29,6 +29,8 @@ use ant\cart\models\CartOption;
  */
 class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 {
+	const TYPE_DEFAULT = 'default';
+	
 	const STATUS_ACTIVE = 0;
 	const STATUS_INACTIVE = 1;
 	
@@ -92,6 +94,8 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
     }
 	
 	public function init() {
+		if (!isset($this->type)) $this->type = self::TYPE_DEFAULT;
+
         foreach ($this->events() as $event => $handler) {
             $this->on($event, is_string($handler) ? [$this, $handler] : $handler);
         }
@@ -466,7 +470,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	*/
 	
 	public function afterFind() {
-		if (!isset($this->type)) throw new \Exception('Type of cart it not set. ');
+		if (!isset($this->type)) throw new \Exception('Type of cart is not set. ');
 		//if (!isset(\Yii::$app->cart->types[$this->type])) throw new \Exception('Cart of "'.$this->type.'" is not configured properly. ');
 		if (isset(\Yii::$app->cart) && isset(\Yii::$app->cart->types[$this->type])) {
 			\Yii::configure($this, \Yii::$app->cart->types[$this->type]);
@@ -595,11 +599,11 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 	
 	public function getAbsorbedServiceCharges() {
-		return Yii::$app->cart->getCartAbsorbedServiceCharges($this);
+		return isset(Yii::$app->cart) ? Yii::$app->cart->getCartAbsorbedServiceCharges($this) : 0;
 	}
 	
 	public function getServiceCharges() {
-		return Yii::$app->cart->getCartServiceCharges($this);
+		return isset(Yii::$app->cart) ? Yii::$app->cart->getCartServiceCharges($this) : 0;
 	}
 	
 	protected function validateItems($attributeNames = null, $scenario = null) {
