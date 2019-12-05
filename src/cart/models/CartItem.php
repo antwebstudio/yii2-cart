@@ -139,9 +139,9 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 			}
 		} else {
 			if (isset($this->item)) {
-				throw new \Exception('Failed to refresh unit price. Item instance of CartItem "'.get_class($this->item).'" is not cartable.');
+				throw new \Exception('Failed to refresh unit price. Item instance of CartItem "'.get_class($this->item).'" is not cartable. (Item ID: '.$this->item_id.', Cart Type: '.$this->cart->type.')');
 			} else {
-				throw new \Exception('Failed to refresh unit price. Item instance of CartItem is null.');
+				throw new \Exception('Failed to refresh unit price. Item instance of CartItem is null. (Item ID: '.$this->item_id.', Cart Type: '.$this->cart->type.')');
 			}
 		}
 		return true;

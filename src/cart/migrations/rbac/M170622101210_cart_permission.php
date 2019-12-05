@@ -13,6 +13,9 @@ class M170622101210_cart_permission extends Migration
 	
 	public function init() {
 		$this->permissions = [
+			\ant\cart\api\v1\controllers\CartController::className() => [
+				'renew' => ['Renew cart token', [Role::ROLE_GUEST]],
+			],
 			\backend\modules\cart\controllers\DefaultController::className() => [
 				'index' => ['Cart index', [Role::ROLE_ADMIN]],
 				'view' => ['View cart detail', [Role::ROLE_ADMIN]],

@@ -91,7 +91,11 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
                 'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
             ],
         ];
-    }
+	}
+	
+	public function fields() {
+		return \yii\helpers\ArrayHelper::merge(parent::fields(), ['expireAt']);
+	}
 	
 	public function init() {
 		if (!isset($this->type)) $this->type = self::TYPE_DEFAULT;
@@ -156,6 +160,12 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	
 	public static function find() {
 		return new \ant\cart\models\query\CartQuery(get_called_class());
+	}
+
+	public static function findByEncryptedId($encryptedId) {
+		$type = Token::TOKEN_TYPE_CART_EVENT_REGISTER;
+		$id = isset(Yii::$app->encrypter) ? Yii::$app->encrypter->decrypt($encryptedId) : Yii::$app->getSecurity()->decryptByPassword($encryptedId, $type);
+		return self::findOne($id);
 	}
 	
 	public static function statusOptions() {
@@ -267,6 +277,10 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		} else {
 			return $options;
 		}
+	}
+
+	public function getExpireAt() {
+		return $this->token->expire_at;
 	}
 	
 	public function addQuoteItem(CartableInterface $item, $quantity = 1, $isLock = false, $attributes = []) {
@@ -616,7 +630,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 
     public function renew()
     {
-        $this->token->renew(self::EXPIRE_DURATION);
+        $this->token->renew(Yii::$app->cart->lifetime);
     }
 
     public function expire()
@@ -676,9 +690,13 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 			return $newCart;
 		}
 	}
+
+	public function getRenewUrl() {
+		return \Yii::$app->apiUrlManager->createUrl($this->getRenewRoute());
+	}
 	
-	public function getRenewRoute($token) {
-		return ['/cart/cart/renew-token', 'cart' => $this->encryptId($this->id), 'tokenkey' => $token];
+	public function getRenewRoute() {
+		return ['/cart/v1/cart/renew', 'cart' => $this->encryptId($this->id)];
 	}
 
 	/*public function getStatusSelectedCartItems($ids) {
