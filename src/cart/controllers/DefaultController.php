@@ -1,5 +1,5 @@
 <?php
-namespace frontend\modules\cart\controllers;
+namespace ant\cart\controllers;
 
 use Yii;
 

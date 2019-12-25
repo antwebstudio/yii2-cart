@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\modules\cart\controllers;
+namespace ant\cart\backend\controllers;
 
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;

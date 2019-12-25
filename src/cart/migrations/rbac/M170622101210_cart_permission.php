@@ -16,12 +16,9 @@ class M170622101210_cart_permission extends Migration
 			\ant\cart\api\v1\controllers\CartController::className() => [
 				'renew' => ['Renew cart token', [Role::ROLE_GUEST]],
 			],
-			\backend\modules\cart\controllers\DefaultController::className() => [
-				'index' => ['Cart index', [Role::ROLE_ADMIN]],
-				'view' => ['View cart detail', [Role::ROLE_ADMIN]],
-			],
-			\frontend\modules\cart\controllers\CartController::className() => [
+			\ant\cart\controllers\CartController::className() => [
 				'index' => ['Cart index', [Role::ROLE_GUEST]],
+				'buy' => ['Add a item into cart and checkout', [Role::ROLE_GUEST]],
 				'checkout' => ['Checkout cart', [Role::ROLE_GUEST]],
 				'confirm' => ['Confirm to cart', [Role::ROLE_GUEST]],
 				'renew-token' => ['Renew cart token', [Role::ROLE_GUEST]],
@@ -30,8 +27,14 @@ class M170622101210_cart_permission extends Migration
 				'ajax-get-cart' => ['Checkout cart', [Role::ROLE_GUEST]],
 				'check-can-check-out' => ['Check can check out (ajax)', [Role::ROLE_GUEST]],
 			],
-			\frontend\modules\cart\controllers\CartItemController::className() => [
+			\ant\cart\controllers\CartItemController::className() => [
 				'attachment' => ['Add attachment for cart item', [Role::ROLE_GUEST]],
+			],
+
+			// backend
+			\ant\cart\backend\controllers\DefaultController::className() => [
+				'index' => ['Cart index', [Role::ROLE_ADMIN]],
+				'view' => ['View cart detail', [Role::ROLE_ADMIN]],
 			],
 
 		];

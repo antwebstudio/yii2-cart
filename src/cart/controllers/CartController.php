@@ -1,5 +1,5 @@
 <?php
-namespace frontend\modules\cart\controllers;
+namespace ant\cart\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -8,6 +8,7 @@ use yii\web\Response;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
+use ant\product\models\Product;
 use ant\order\models\Order;
 use ant\payment\models\Invoice;
 use ant\token\models\Token;
@@ -65,6 +66,19 @@ class CartController extends Controller
 		return $this->render('checkout', [
 			'cart' => $cart,
 		]);
+	}
+
+	public function actionBuy($item, $type = null) {
+		if (!isset($type)) $className = Product::class;
+		$item = $className::findOne($item);
+
+		$model = $this->module->getFormModel('addToCart', ['item' => $item]);
+		
+		if ($model->load(Yii::$app->request->post(), '') && $model->checkout()) {
+			return $this->redirect($model->returnUrl);
+        } else if ($model->checkout()) {
+			return $this->redirect($model->returnUrl);
+		}
 	}
 	
 	public function actionAjaxGetCart() {

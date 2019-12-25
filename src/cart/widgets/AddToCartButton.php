@@ -1,5 +1,5 @@
 <?php
-namespace frontend\modules\cart\widgets;
+namespace ant\cart\widgets;
 
 use yii\helpers\Html;
 use yii\helpers\Url;

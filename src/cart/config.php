@@ -12,4 +12,7 @@ return [
 		'backend' => \ant\cart\backend\Module::class,
 	],
     'isCoreModule' => false,
+	/*'migrations' => [
+		'ant\cart\migrations\db',
+	],*/
 ];

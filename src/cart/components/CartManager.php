@@ -90,6 +90,8 @@ class CartManager extends \yii\base\Component {
 				return call_user_func_array($this->types[$type]['item'], [$cartItem]);
 			}
 		}
+
+		return \ant\models\ModelClass::getModel($cartItem->item_class_id, $cartItem->item_id);
 	}
 	
 	public function getItemClass($type) {

@@ -5,6 +5,7 @@ namespace ant\cart\models;
 use Yii;
 use \yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use ant\models\ModelClass;
 use ant\helpers\Currency;
 use ant\helpers\DateTime;
 use ant\interfaces\Expirable;
@@ -91,7 +92,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
                 'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
             ],
         ];
-	}
+    }
 	
 	public function fields() {
 		return \yii\helpers\ArrayHelper::merge(parent::fields(), ['expireAt']);
@@ -334,6 +335,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 			$cartItem->attributes = $attributes;
 			$cartItem->name = $item->getName();
 			$cartItem->unique_hash_id = $item->getUniqueHashId();
+			$cartItem->item_class_id = ModelClass::getClassId($item);
 			$cartItem->item_id = $item->getId();
 			$cartItem->data = ArrayHelper::merge(isset($attributes['data']) ? $attributes['data'] : [], [CartItem::DATA_CARTABLE => $item->getCartItemCustomData()]);
 			$cartItem->quantity = $quantity;

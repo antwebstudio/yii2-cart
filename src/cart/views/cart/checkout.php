@@ -24,11 +24,5 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 	]) ?>
 
 <?php else: ?>
-	<?= \yii\bootstrap\Alert::widget([
-		'closeButton' => false,
-		'options' => [
-			'class' => 'alert-warning',
-		],
-		'body' => 'No product added',
-	]); ?>
-<?php endif; ?>
+	No product added
+<?php endif ?>
