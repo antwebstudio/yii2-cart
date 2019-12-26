@@ -15,7 +15,7 @@
 		"antweb/yii2-core" : "*",
 		"antweb/yii2-user" : "*",
 		"antweb/yii2-payment" : "*",
-        "antweb/yii2-core-module": "^1.0"
+        "antweb/yii2-core-module": "*"
 	},
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",

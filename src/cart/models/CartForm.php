@@ -9,6 +9,7 @@ class CartForm extends \ant\web\FormModel
     public $item;
     public $returnUrl = ['/cart'];
     public $checkoutUrl = ['/cart/cart/checkout'];
+    public $confirmUrl = ['/ecommerce/cart/confirm'];
 
 	public function models() {
         return [
@@ -20,7 +21,7 @@ class CartForm extends \ant\web\FormModel
     }
 
     public function checkout() {
-        $this->returnUrl = $this->checkoutUrl;
+        $this->returnUrl = $this->confirmUrl;
         return $this->process();
     }
 

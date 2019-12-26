@@ -1,4 +1,5 @@
 <?php
+if (YII_DEBUG) throw new \Exception('DEPRECATED');
 
 use yii\helpers\Url;
 use yii\helpers\Html;

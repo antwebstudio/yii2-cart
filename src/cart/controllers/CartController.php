@@ -71,6 +71,8 @@ class CartController extends Controller
 	public function actionBuy($item, $type = null) {
 		if (!isset($type)) $className = Product::class;
 		$item = $className::findOne($item);
+		
+		Yii::$app->cart->createCart();
 
 		$model = $this->module->getFormModel('addToCart', ['item' => $item]);
 		
@@ -127,10 +129,14 @@ class CartController extends Controller
 	}
 
 	public function actionConfirm($type = null, $orderType = null) {
+		if (YII_DEBUG) throw new \Exception('DEPRECATED, please use ecommerce/cart/confirm');
+		
 		if(!$this->canCheckOut()) {
 			return $this->redirect(['index']);
 		}
+
 		$cart = Yii::$app->cart->getLastCart($type)->setSelectedCartItemIds($this->getSelectedCartItemIds());
+		
 		if($cart->load(Yii::$app->request->post())) {
 			$cart->save();
 		}

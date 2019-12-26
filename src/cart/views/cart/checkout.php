@@ -18,7 +18,7 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 			],
 			'next' => [
 				'label' => 'Confirm <i class="fa fa-angle-right"></i>',
-				'url' => ['/cart/cart/confirm'],
+				'url' => ['/ecommerce/cart/confirm'],
 			],
 		],
 	]) ?>
