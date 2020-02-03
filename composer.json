@@ -1,7 +1,7 @@
 {
     "name": "antweb/yii2-cart",
     "description": "Yii2 Module",
-    "type": "library",
+    "type": "ant-module",
     "authors": [
         {
             "name": "Hui Yang",
