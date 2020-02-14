@@ -35,7 +35,16 @@ class CartManagerCest
 		
 		$I->assertTrue(isset($cart));
 		$I->assertFalse($cart->isExpired);
-		$I->assertTrue(isset($cart->token->expire_at));
+		$I->assertFalse(isset($cart->expireAt));
+		
+		\Yii::$app->cart->lifetime = 60 * 10;
+		
+		$cart = \Yii::$app->cart->createCart($cartType);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		
+		$cart = Cart::findOne($cart->id);
+		
+		$I->assertTrue(isset($cart->expireAt));
 	}
 	
 	public function testCreateCartNeverExpire(UnitTester $I) {
@@ -68,7 +77,7 @@ class CartManagerCest
 
 		$I->assertTrue(isset($cart));
 		$I->assertFalse($cart->isExpired);
-		$I->assertTrue(isset($cart->token->expire_at));
+		$I->assertFalse(isset($cart->expireAt));
 		$I->assertEquals($cartId, $cart->id);
 	}
 

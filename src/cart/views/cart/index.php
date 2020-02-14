@@ -2,6 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use ant\widgets\Alert;
 
 $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping Cart');
 ?>
@@ -13,11 +14,11 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 		]) ?>
 	<?php \yii\widgets\Pjax::end() ?>
 <?php else: ?>
-	<?= \yii\bootstrap\Alert::widget([
+	<?= Alert::widget([
 		'closeButton' => false,
 		'options' => [
 			'class' => 'alert-warning',
 		],
 		'body' => 'No product added',
-	]); ?>
+	]) ?>
 <?php endif; ?>

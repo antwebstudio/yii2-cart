@@ -10,15 +10,16 @@ use ant\helpers\TemplateHelper;
 class CartList extends \yii\base\Widget {
 	public $cart;
 	public $editable = true;
+	public $checkout = false;
+	public $checkoutUrl = ['/cart/cart/checkout'];
+	public $confirmUrl = ['/ecommerce/cart/confirm'];
 	public $checkbox = true;
-	public $buttonNext2 = false;
 	public $layout = '{items}';
 	public $prevLayout = '{prev}';
 	public $nextLayout = '{next}';
-	public $next2Layout = '{next2}';
 	public $options = [];
 	public $currencySymbol = '';
-	public $form;
+	public $form = [];
 	
 	public $buttons = [];
 	
@@ -38,17 +39,13 @@ class CartList extends \yii\base\Widget {
 		'prev' => [
 			'label' => '<i class="fa fa-angle-left"></i> Continue Shopping',
 			'url' => ['/ecommerce/product'],
-			'options' => ['class' => 'prev btn btn-default'],
+			'options' => ['class' => 'prev btn btn-default btn-light'],
 		],
 		'next' => [
 			'label' => 'Checkout <i class="fa fa-angle-right"></i>', 
-			'url' => ['/cart/cart/checkout'],
+			//'url' => ['/cart/cart/checkout'],
+			'isSubmit' => true,
 			'options' => ['class' => 'next btn btn-primary'],
-		],
-		'next2' => [
-			'label' => 'Request Quotation <i class="fa fa-angle-right"></i>', 
-			'url' => ['/cart/cart/confirm'],
-			'options' => ['class' => 'next2 btn btn-primary'],
 		],
 	];
 	
@@ -95,12 +92,15 @@ class CartList extends \yii\base\Widget {
 	}
 	
 	protected function beginForm() {
-		if (is_array($this->form)) {
-			$this->_form = ActiveForm::begin($this->form);
-		} else if (!isset($this->form)) {
-			$this->_form = ActiveForm::begin();
-		} else {
-			$this->_form = null;
+		if (isset($this->form)) {
+			$options = $this->form;
+			if ($this->checkout) {
+				$options['action'] = $this->confirmUrl;
+			} else {
+				$options['action'] = $this->checkoutUrl;
+			}
+			
+			$this->_form = ActiveForm::begin($options);
 		}
 	}
 	
@@ -108,6 +108,11 @@ class CartList extends \yii\base\Widget {
 		if (isset($this->_form)) {
 			ActiveForm::end();
 		}
+	}
+	
+	public function isSelected($item) {
+		$selected = \Yii::$app->request->post('cart-item', []);
+		return in_array($item->id, $selected);
 	}
 	
 	protected function renderSection($name)
@@ -121,16 +126,20 @@ class CartList extends \yii\base\Widget {
                 return $this->renderButton('prev');
             case '{next}':
                 return $this->renderButton('next');
-            case '{next2}':
-                return $this->renderButton('next2');
-            //case '{pager}':
-            //    return $this->renderPager();
-            //case '{sorter}':
-            //    return $this->renderSorter();
             default:
                 return false;
         }
     }
+	
+	public function renderCheckbox($item) {
+		if ($this->checkbox) {
+			if ($this->checkout) {
+				return Html::hiddenInput('cart-item[]', $item->id);
+			} else {
+				return Html::checkbox('cart-item[]', false, ['value' => $item->id, 'data-id' => $item->id, 'class' => 'cart-item-checkbox']);
+			}
+		}
+	}
 	
 	public function renderPrev() {
 		return $this->_renderTemplate($this->prevLayout);
@@ -138,10 +147,6 @@ class CartList extends \yii\base\Widget {
 	
 	public function renderNext() {
 		return $this->_renderTemplate($this->nextLayout);
-	}
-
-	public function renderNext2() {
-		return $this->_renderTemplate($this->next2Layout);
 	}
 	
 	public function renderSummaryLabelCellContent($model, $attribute) {
@@ -199,6 +204,7 @@ class CartList extends \yii\base\Widget {
 	public function renderItems() {
 		return $this->render('cart-list', [
 			'cart' => $this->cart,
+			'form' => $this->_form,
 		]);
 	}
 	
@@ -221,7 +227,7 @@ class CartList extends \yii\base\Widget {
 			return call_user_func_array($button, $params);
 		} else {
 			$url = $this->getButtonParam($name, 'url');
-			$url = Url::toRoute($url);
+			$url = isset($url) ? Url::toRoute($url) : $url;
 			$options = $this->getButtonParam($name, 'options');
 			$label = $this->getButtonParam($name, 'label');
 			$isSubmitButton = $this->getButtonParam($name, 'isSubmit', false);

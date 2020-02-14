@@ -10,6 +10,7 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 
 	<?= \ant\cart\widgets\CartList::widget([
 		'editable' => false,
+		'checkout' => true,
 		'cart' => $cart,
 		'buttons' => [
 			'prev' => [

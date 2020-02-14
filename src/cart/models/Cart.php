@@ -191,6 +191,10 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		return $selected;
 	}
 	
+	public function getRoute() {
+		return ['/cart/cart'];
+	}
+	
 	public function getSelectedCartItemIds() {
 		return $this->_selectedCartItemIds;
 	}
@@ -281,7 +285,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 
 	public function getExpireAt() {
-		return $this->token->expire_at;
+		return isset($this->token) ? $this->token->expire_at : null;
 	}
 	
 	public function addQuoteItem(CartableInterface $item, $quantity = 1, $isLock = false, $attributes = []) {
@@ -505,22 +509,15 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 
 	public function generateToken() {
-		$type = Token::TOKEN_TYPE_CART_EVENT_REGISTER;
 		$queryParams = [
             'cart' => $this->encryptId($this->id),
             'tokenkey' => Token::createTokenKey()
 		];
-		$duration = self::EXPIRE_DURATION;
 		
-		$token = new Token;
-
-        $token->type = $type;
-        $token->queryParams = $queryParams;
-        $token->duration = $duration;
-
-        if($token->save()) $this->token_id = $token->id;
-		if (!$this->save()) throw new \Exception(Html::errorSummary($token));
-
+		$token = Token::generate(Token::TOKEN_TYPE_CART_EVENT_REGISTER, Yii::$app->cart->lifetime, $queryParams);
+			
+		$this->link('token', $token);
+		
 		return $token;
 	}
 

@@ -245,6 +245,8 @@ class CartCest
 		
 		$newCart = $cart->splitCart([$cartItem1->id]);
 		
+		$I->assertEquals(null, $cart->expireAt);
+		$I->assertEquals(null, $newCart->expireAt);
 		$I->assertEquals(1, count($cart->cartItems));
 		$I->assertEquals(1, count($newCart->cartItems));
 		$I->assertEquals($cartItem2->id, $cart->cartItems[0]->id);

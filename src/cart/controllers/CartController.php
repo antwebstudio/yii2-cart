@@ -63,7 +63,7 @@ class CartController extends Controller
 
 		$cart->setSelectedCartItemIds($this->getSelectedCartItemIds());
 		
-		return $this->render('checkout', [
+		return $this->render($this->action->id, [
 			'cart' => $cart,
 		]);
 	}

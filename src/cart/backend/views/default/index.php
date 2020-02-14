@@ -38,6 +38,9 @@ $this->params['headerRightPanel'] = ['Home'];
 				},
 			],
 			[
+				'attribute' => 'token.expire_at',
+			],
+			[
 				'value' => function($data) {
 					return count($data->cartItems);
 				},
@@ -51,7 +54,7 @@ $this->params['headerRightPanel'] = ['Home'];
 				},
 			],
 			[
-				'class' => \yii\grid\ActionColumn::className(),
+				'class' => 'ant\grid\ActionColumn',
 				'visibleButtons' => [
 					'update' => false,
 					'delete' => function ($model, $key, $index) {

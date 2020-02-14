@@ -7,7 +7,7 @@ use ant\cart\widgets\CartList;
 
 //$this->context->layout = '//main';
 
-$this->params['content-header-buttons'][] = Html::a('<span class="btn-label"><i class="fa fa-plus"></i></span> Back', ['/cart'], ['class' => 'btn btn-sm btn-primary btn-labeled']);
+$this->params['content-header-buttons'][] = Html::a('Back', ['/cart/backend'], ['class' => 'btn btn-sm btn-primary btn-labeled']);
 ?>
 
 <div class="row">

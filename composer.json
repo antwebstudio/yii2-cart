@@ -8,14 +8,15 @@
             "email": "chy1988@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.0",
 		"antweb/yii2-core" : "*",
 		"antweb/yii2-user" : "*",
 		"antweb/yii2-payment" : "*",
-        "antweb/yii2-core-module": "*"
+        "antweb/yii2-core-module": "*",
+		"antweb/yii2-token": "*"
 	},
     "require-dev": {
         "yiisoft/yii2-codeception": "~2.0.0",

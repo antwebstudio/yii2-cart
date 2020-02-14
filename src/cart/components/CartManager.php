@@ -6,7 +6,7 @@ use ant\cart\models\Cart;
 class CartManager extends \yii\base\Component {
 	public $types;
 	public $defaultType = 'default';
-	public $lifetime = 10 * 60;
+	public $lifetime; // seconds
 	
 	public function createCart($type = null) {
 		if (!isset($type)) $type = $this->defaultType;
