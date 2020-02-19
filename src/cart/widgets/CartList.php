@@ -1,6 +1,7 @@
 <?php
 namespace ant\cart\widgets;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -20,15 +21,21 @@ class CartList extends \yii\base\Widget {
 	public $options = [];
 	public $currencySymbol = '';
 	public $form = [];
-	
+	public $columns = [];
+    public $dataColumnClass;
+	public $emptyCell;
+	public $summary;
 	public $buttons = [];
 	
-	public $summary = [
-		'subtotal', 'discountAmount', 'taxCharges', /*'tax_amount', */
-		[
-			'attribute' => 'netTotal',
-			'label' => 'Total',
-			'format' => 'html',
+	protected $summaryDefault = [
+		'class' => 'ant\cart\widgets\CartListSummary',
+		'rows' => [
+			'subtotal', 'discountAmount', 'taxCharges', /*'tax_amount', */
+			[
+				'attribute' => 'netTotal',
+				'label' => 'Total',
+				'format' => 'html',
+			],
 		],
 	];
 	
@@ -58,6 +65,8 @@ class CartList extends \yii\base\Widget {
 		if (!isset($this->cart)) throw new \Exception(get_called_class().' need cart property set. ');
 		$this->options['cartType'] = $this->cart->type;
 		$this->options['url'] = \yii\helpers\Url::to($this->url);
+		
+		$this->summary = Yii::createObject(ArrayHelper::merge($this->summaryDefault, $this->summary));
 		
 		//$this->buttons = \yii\helpers\ArrayHelper::merge($this->_buttonParams, $this->buttons);
 		
@@ -149,6 +158,25 @@ class CartList extends \yii\base\Widget {
 		return $this->_renderTemplate($this->nextLayout);
 	}
 	
+	public function renderColumnsHeader() {
+		$this->initColumns();
+		
+        foreach ($this->columns as $column) {
+            $cells[] = $column->renderHeaderCell();
+        }
+        return implode('', $cells);
+	}
+	
+	public function renderColumns($model, $key, $index) {
+		
+		$options = [];
+		
+        foreach ($this->columns as $column) {
+            $cells[] = $column->renderDataCell($model, $key, $index);
+        }
+        return implode('', $cells);
+	}
+	
 	public function renderSummaryLabelCellContent($model, $attribute) {
 		$format = isset($attribute['format']) ? $attribute['format'] : 'text';
 		
@@ -165,6 +193,28 @@ class CartList extends \yii\base\Widget {
 		}
 		return $model->{$attribute};
 	}
+	
+	protected function initColumns()
+    {
+        /*if (empty($this->columns)) {
+            $this->guessColumns();
+        }*/
+        foreach ($this->columns as $i => $column) {
+            if (is_string($column)) {
+                $column = $this->createDataColumn($column);
+            } else {
+                $column = Yii::createObject(array_merge([
+                    'class' => $this->dataColumnClass ?: \yii\grid\DataColumn::className(),
+                    'grid' => $this,
+                ], $column));
+            }
+            if (!$column->visible) {
+                unset($this->columns[$i]);
+                continue;
+            }
+            $this->columns[$i] = $column;
+        }
+    }
 	
 	protected function getSummaryCellValue($model, $attribute) {
 		return $this->getDataCellValue($model, $attribute);

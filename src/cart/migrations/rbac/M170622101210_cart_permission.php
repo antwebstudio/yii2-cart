@@ -16,6 +16,9 @@ class M170622101210_cart_permission extends Migration
 			\ant\cart\api\v1\controllers\CartController::className() => [
 				'renew' => ['Renew cart token', [Role::ROLE_GUEST]],
 			],
+			\ant\cart\controllers\DefaultController::className() => [
+				'index' => ['Cart index', [Role::ROLE_GUEST]],
+			],
 			\ant\cart\controllers\CartController::className() => [
 				'index' => ['Cart index', [Role::ROLE_GUEST]],
 				'buy' => ['Add a item into cart and checkout', [Role::ROLE_GUEST]],
@@ -29,6 +32,8 @@ class M170622101210_cart_permission extends Migration
 			],
 			\ant\cart\controllers\CartItemController::className() => [
 				'attachment' => ['Add attachment for cart item', [Role::ROLE_GUEST]],
+				'upload' => ['Add attachment for cart item', [Role::ROLE_GUEST]],
+				'upload-delete' => ['Add attachment for cart item', [Role::ROLE_GUEST]],
 			],
 
 			// backend

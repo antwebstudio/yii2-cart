@@ -52,7 +52,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	const TYPE_ORDER = 0;
 	
 	public function behaviors() {
-		return [
+		$behaviors = [
 			[
 				'class' => \ant\behaviors\SerializeBehavior::className(),
 				'attributes' => ['data'],
@@ -66,6 +66,20 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 				'class' => \ant\behaviors\DuplicatableBehavior::className(),	
 			],
 		];
+		
+		if (class_exists('ant\file\behaviors\AttachmentBehavior')) {
+			$behaviors['attachment'] = [
+				'class' => \ant\file\behaviors\AttachmentBehavior::className(),
+				'modelType' => \ant\cart\models\CartItem::class,
+				'attribute' => 'attachments',
+				'multiple' => true,
+				'type' => 'attachment1',
+				/*'isRequired' => function() {
+					return !in_array($this->owner->scenario, [\ant\cart\models\CartItem::SCENARIO_ADD_TO_CART, \ant\cart\models\CartItem::SCENARIO_ADD_TO_QUOTATION]);
+				},*/
+			];
+		}
+		return $behaviors;
 	}
 	
     /**

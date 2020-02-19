@@ -20,6 +20,25 @@ class CartItemController extends Controller
 {
     public $layout = '//one-column';
 
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'trntv\filekit\actions\UploadAction',
+                // 'validationRules' => [
+                //     [['file'], function ($attribute, $params, $validator) {
+                //         print_r($_FILES);
+                //         die;
+                //     }],
+                // ],
+                'deleteRoute' => 'upload-delete',
+            ],
+            'upload-delete' => [
+                'class' => 'trntv\filekit\actions\DeleteAction'
+            ],
+		];
+	}
+
 	public function actionAdd() {
 		$type = Yii::$app->request->post('type');
 		$item_id = Yii::$app->request->post('item_id');

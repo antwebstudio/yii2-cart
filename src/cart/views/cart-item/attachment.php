@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use ant\file\widgets\Upload;
 use ant\securityMobileApp\models\Customer;
 
 /* @var $this yii\web\View */
@@ -16,18 +17,9 @@ use ant\securityMobileApp\models\Customer;
     <?php $form = ActiveForm::begin(); ?>
 	
     <?= $form->field($model, 'attachments')->widget(
-        \trntv\filekit\widget\Upload::className(),
+        Upload::className(),
         [
-            'url' => ['/file/file-storage-item/upload'],
-            'sortable' => true,
-            'maxFileSize' => 10000000, // 10 MiB
-            'maxNumberOfFiles' => 10
-        ]);
-    ?>
-    <?= $form->field($model, 'attachments2')->widget(
-        \trntv\filekit\widget\Upload::className(),
-        [
-            'url' => ['/file/file-storage-item/upload'],
+            'url' => ['upload'],
             'sortable' => true,
             'maxFileSize' => 10000000, // 10 MiB
             'maxNumberOfFiles' => 10

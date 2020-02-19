@@ -17,6 +17,7 @@ use yii\widgets\ActiveForm;
 			<th style="width:50%">Product</th>
 			<th style="width:10%">Price</th>
 			<th style="width:8%">Quantity</th>
+			<?= $this->context->renderColumnsHeader() ?>
 			<th style="width:22%" class="text-center">Subtotal</th>
 			<th style="width:10%"></th>
 		</tr>
@@ -30,7 +31,7 @@ use yii\widgets\ActiveForm;
 			<?php endforeach ?>
 		<?php endif ?>
 		*/ ?>
-		<?php foreach ($cart->selectedCartItems as $item): ?>
+		<?php foreach ($cart->selectedCartItems as $index => $item): ?>
 		<tr data-item="<?= $item->id ?>">
 			<td data-th="Product">
 			<div class="row cart-item" able-checkout="<?= $item->isAbleToCheckout ? 1 : 0 ?>"?>
@@ -71,6 +72,7 @@ use yii\widgets\ActiveForm;
 					<?= $item->quantity ?>
 				<?php endif ?>
 			</td>
+			<?= $this->context->renderColumns($item, $item->id, $index) ?>
 			<td data-th="Subtotal" class="text-right">
 				<?= $item->netTotal ?>
 			</td>
@@ -83,16 +85,16 @@ use yii\widgets\ActiveForm;
 		<?php endforeach ?>
 	</tbody>
 	<tfoot>
-		<?php foreach ($this->context->summary as $attribute): ?>
+		<?php foreach ($this->context->summary->rows as $attribute): ?>
 			<tr class="visible-xs d-block d-sm-none">
 				<td class="text-center"><strong><?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?> <?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?></strong></td>
 			</tr>
 		<?php endforeach ?>
 		
-		<?php foreach ($this->context->summary as $attribute): ?>
+		<?php foreach ($this->context->summary->rows as $attribute): ?>
 			<tr>
 				<td></td>
-				<td colspan="2" class="hidden-xs text-right"><?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?> </td>
+				<td colspan="<?= $this->context->summary->colspan ?>" class="hidden-xs text-right"><?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?> </td>
 				<td class="hidden-xs text-right"><strong><?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?></strong></td>
 				<td></td>
 			</tr>
