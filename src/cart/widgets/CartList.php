@@ -45,14 +45,14 @@ class CartList extends \yii\base\Widget {
 	protected $_buttonParams = [
 		'prev' => [
 			'label' => '<i class="fa fa-angle-left"></i> Continue Shopping',
-			'url' => ['/ecommerce/product'],
-			'options' => ['class' => 'prev btn btn-default btn-light'],
+			'url' => ['/'],
+			'options' => ['class' => 'prev btn btn-secondary col-12 col-sm-auto mb-1'],
 		],
 		'next' => [
 			'label' => 'Checkout <i class="fa fa-angle-right"></i>', 
 			//'url' => ['/cart/cart/checkout'],
 			'isSubmit' => true,
-			'options' => ['class' => 'next btn btn-primary'],
+			'options' => ['class' => 'next btn btn-primary col-12 col-sm-auto'],
 		],
 	];
 	

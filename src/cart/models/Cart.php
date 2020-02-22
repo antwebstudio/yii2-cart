@@ -205,7 +205,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 	
 	public function getIsAbleToCheckout() {
-		if ($this->isExpired) return false;
+		if ($this->isExpired || count($this->cartItems) == 0) return false;
 		
 		foreach ($this->cartItems as $item) {
 			if ($this->isCartItemSelected($item->id) && !$item->getIsAbleToCheckout()) {
@@ -216,7 +216,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 
 	public function getIsAbleToQuotation() {
-		if ($this->isExpired) return false;
+		if ($this->isExpired || count($this->cartItems) == 0) return false;
 		
 		foreach ($this->cartItems as $item) {
 			if ($this->isCartItemSelected($item->id) && !$item->getIsAbleToQuotation()) {
@@ -514,7 +514,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
             'tokenkey' => Token::createTokenKey()
 		];
 		
-		$token = Token::generate(Token::TOKEN_TYPE_CART_EVENT_REGISTER, Yii::$app->cart->lifetime, $queryParams);
+		$token = Token::generate(Token::TOKEN_TYPE_CART_EVENT_REGISTER, isset(Yii::$app->cart) ? Yii::$app->cart->lifetime : null, $queryParams);
 			
 		$this->link('token', $token);
 		

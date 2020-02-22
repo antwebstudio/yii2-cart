@@ -177,34 +177,81 @@ class CartItemCest
 		
 		$I->assertFalse($exceptionThrown);
 	}
+	
+	public function testSetCartItemCustomData(UnitTester $I) {
+		$customDataPrice = 20;
+		
+		\Yii::configure(\Yii::$app->cart, [
+			'types' => [
+				'product' => [
+					'item' => function() {
+						return new CartItemCestTestItemWithCustomDataPrice;
+					},
+				],
+			],
+		]);
+		
+		$testModel = new CartItemCestTestItemWithCustomDataPrice;
+		$testModel->name = 'test';
+		if (!$testModel->save()) throw new \Exception(print_r($testModel->errors,1));
+		
+		$cartItem = new CartItem;
+		$cartItem->item_class_id = \ant\models\ModelClass::getClassId($testModel);
+		$cartItem->item_id = $testModel->id;
+		
+		$previousPrice = $cartItem->price;
+		
+		$cartItem->data = [
+			'cartable' => ['price' => $customDataPrice],
+		];
+		$cartItem->refreshPrice();
+		
+		$I->assertNotEquals($previousPrice, $cartItem->price);
+		$I->assertEquals($customDataPrice, $cartItem->price);
+	}
 }
 
-class CartItemCestTestItemWithNullUnitPrice implements CartableInterface {
-	public function getPrice() {
-		return null;
+class CartItemCestTestItem extends \yii\db\ActiveRecord implements CartableInterface {
+	public static function tableName() {
+		return '{{%test}}';
 	}
-
+	
 	public function getDiscount() {
-
 	}
 
 	public function getName() {
-
 	}
 
 	public function getUniqueHashId() {
-
 	}
 
 	public function getCartItemCustomData() {
-
 	}
 
 	public function setCartItemCustomData($data) {
-
 	}
 
 	public function getId() {
+	}
+	
+	public function getPrice() {
+	}
+}
 
+class CartItemCestTestItemWithCustomDataPrice extends CartItemCestTestItem {
+	protected $_data;
+	
+	public function getPrice() {
+		return isset($this->_data['cartable']['price']) ? $this->_data['cartable']['price'] : 0;
+	}
+
+	public function setCartItemCustomData($data) {
+		$this->_data = $data;
+	}
+}
+
+class CartItemCestTestItemWithNullUnitPrice extends CartItemCestTestItem {
+	public function getPrice() {
+		return null;
 	}
 }

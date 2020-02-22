@@ -14,6 +14,7 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 		]) ?>
 	<?php \yii\widgets\Pjax::end() ?>
 <?php else: ?>
+	<?php /*
 	<?= Alert::widget([
 		'closeButton' => false,
 		'options' => [
@@ -21,4 +22,9 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 		],
 		'body' => 'No product added',
 	]) ?>
+	*/?>
+	<div class="empty cart text-center py-5 card">
+		<i class="fa fa-4x fa-shopping-cart mb-3"></i>
+		<h3>Your shopping cart is empty.</h3>
+	</div>
 <?php endif; ?>

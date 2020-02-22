@@ -36,6 +36,8 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	public $attachments;
 	public $attachments2;
 	
+	protected $_item;
+	
 	const SCENARIO_ADD_TO_CART = 'add_to_cart';
 	const SCENARIO_ADD_TO_QUOTATION = 'add_to_quotation';
 	const SCENARIO_CHECKOUT = 'checkout';
@@ -141,7 +143,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 
 	protected function refreshUnitPrice() {
 		if ($this->item instanceof Cartable) {
-			
+			$this->item->setCartItemCustomData($this->getParamsForPrice());
 			$this->unit_price = $this->item->getPrice($this->getParamsForPrice());
 			
 			if (!isset($this->unit_price)) {
@@ -184,7 +186,12 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getUrl() {
-		if (isset($this->item->url)) return $this->item->url;
+		if (isset($this->item_url)) return $this->item_url;
+		else if (isset($this->item->url)) return $this->item->url;
+	}
+	
+	public function getPrice() {
+		return $this->getUnitPrice();
 	}
 	
 	public function getUnitPrice() {
@@ -271,11 +278,15 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getItem() {
-		if (isset(Yii::$app->cart)) {
-			return Yii::$app->cart->getItemByCartItem($this);
+		if (!isset($this->_item)) {
+			if (isset(Yii::$app->cart)) {
+				$this->_item = Yii::$app->cart->getItemByCartItem($this);
+			} else {
+				$this->_item = $this->hasOne(Product::className(), ['id' => 'item_id']);
+			}
 		}
 		
-		return $this->hasOne(Product::className(), ['id' => 'item_id']);
+		return $this->_item;
 	}
 
     /**

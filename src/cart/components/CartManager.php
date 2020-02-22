@@ -90,7 +90,9 @@ class CartManager extends \yii\base\Component {
 				return call_user_func_array($this->types[$type]['item'], [$cartItem]);
 			}
 		}
-
+		if (!isset($cartItem->item_class_id)) throw new \Exception('Class of item is not set. ');
+		if (!isset($cartItem->item_id)) throw new \Exception('Item ID is not set. ');
+		
 		return \ant\models\ModelClass::getModel($cartItem->item_class_id, $cartItem->item_id);
 	}
 	

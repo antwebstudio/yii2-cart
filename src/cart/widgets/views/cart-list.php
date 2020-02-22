@@ -10,8 +10,8 @@ use yii\widgets\ActiveForm;
 \ant\cart\widgets\CartListAsset::register($this);
 
 ?>
-		
-<table id="<?= $this->context->id ?>" class="table table-hover table-condensed">
+<?php // Desktop Version ?>		
+<table id="<?= $this->context->id ?>" class="d-sm-block d-none table table-hover table-condensed">
 	<thead>
 		<tr>
 			<th style="width:50%">Product</th>
@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
 						<?= $item->item->uniqueHashId ?>
 					<?php endif; ?>
 					*/?>
-					<div class="col-sm-2 hidden-xs">
+					<div class="col-sm-2 d-none d-md-block">
 						<img src="<?= Str::default($item->image, 'http://placehold.it/100x100') ?>" class="img-responsive img-fluid"/>
 					</div>
 					<div class="col-sm-10">
@@ -86,21 +86,84 @@ use yii\widgets\ActiveForm;
 	</tbody>
 	<tfoot>
 		<?php foreach ($this->context->summary->rows as $attribute): ?>
-			<tr class="visible-xs d-block d-sm-none">
-				<td class="text-center"><strong><?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?> <?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?></strong></td>
-			</tr>
-		<?php endforeach ?>
-		
-		<?php foreach ($this->context->summary->rows as $attribute): ?>
 			<tr>
 				<td></td>
 				<td colspan="<?= $this->context->summary->colspan ?>" class="hidden-xs text-right"><?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?> </td>
-				<td class="hidden-xs text-right"><strong><?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?></strong></td>
+				<td class="text-right"><strong><?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?></strong></td>
 				<td></td>
 			</tr>
 		<?php endforeach ?>
 	</tfoot>
 </table>
+
+<?php // Mobile version ?>
+
+<div class="d-sm-none mb-3">
+	<?php foreach ($cart->selectedCartItems as $index => $item): ?>
+		<div class="cart-row my-1 py-1">
+			<div class="row  my-1 py-1">
+				<div class="col-5">
+					<?= $this->context->renderCheckbox($item) ?>
+					<img src="<?= Str::default($item->image, 'http://placehold.it/100x100') ?>" class="img-responsive img-fluid"/>
+				</div>
+				<div class="col-7">
+					<h4 class="nomargin"><a href="<?= $item->url ?>" data-pjax="0"><?= $item->name ?></a></h4>
+					
+					<?= $cart->getDescriptionForCartItem($item) ?>
+			
+					<?php /*
+					<?= $this->render('_debug-cart-list', ['item' => $item]) ?>
+					*/?>
+					
+					<?php if (isset($item->remark)): ?>
+						<p>Remark: <?= $item->remark ?></p>
+					<?php endif ?>
+					
+					<?php if ($this->context->editable): ?>
+						<button data-action='delete' class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>		
+					<?php endif ?>
+				</div>
+			</div>
+			<div class="row  my-1 py-1">
+				<div class="col-4">
+					<label class="d-block">Price</label>
+					<?php if ($item->unitPrice != $item->discountedUnitPrice): ?>
+						<strike><?= Yii::$app->formatter->asCurrency($item->unitPrice) ?></strike>
+					<?php endif ?>
+					
+					<?= Yii::$app->formatter->asCurrency($item->discountedUnitPrice) ?>
+				</div>
+				<div class="col-4">
+					<label class="d-block text-center">Quantity</label>
+					<?php if ($this->context->editable && !$item->is_locked): ?>
+						<input data-field="quantity" type="number" class="form-control text-center" value="<?= $item->quantity ?>">
+					<?php else: ?>
+						<?= $item->quantity ?>
+					<?php endif ?>
+				</div>
+				<div class="col-4 text-right">
+					<label class="d-block">Total</label>
+					<?= Yii::$app->formatter->asCurrency($item->netTotal) ?>
+				</div>
+				<div class="col my-2 py-2">
+					<label class="d-block">Attachment</label>
+					<?= $this->context->renderColumns($item, $item->id, $index) ?>
+				</div>
+			</div>
+		</div>
+	<?php endforeach ?>
+	<?php foreach ($this->context->summary->rows as $attribute): ?>
+		<div class="row">
+			<div class="col-7">
+				<?= $this->context->renderSummaryLabelCellContent($cart, $attribute) ?>
+			</div>
+			<div class="col-5 text-right">
+				RM <?= $this->context->renderSummaryValueCellContent($cart, $attribute) ?>
+			</div>
+		</div>
+	<?php endforeach ?>
+</div>
+		
 
 <?php if ($this->context->editable): ?>
 	<?= $form->field($cart, 'remark')->label() ?>
@@ -110,10 +173,10 @@ use yii\widgets\ActiveForm;
 <?php endif ?>
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-sm-6">
 		<?= $this->context->renderPrev() ?>
 	</div>
-	<div class="col-md-6 text-right">
+	<div class="col-sm-6 text-right">
 		<?= $this->context->renderNext() ?>
 	</div>
 </div>

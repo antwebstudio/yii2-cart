@@ -20,7 +20,7 @@ class CartQueryCest
 		$cart = new Cart(['type' => 'default']);
         if (!$cart->save()) throw new \Exception(Html::errorSummary($cart));
 		
-		$cart = Cart::find()->alias('cart')->andWhere(['cart.id' => $cart->id])->active()->one();
+		$cart = Cart::find()->alias('cart')->andWhere(['cart.id' => $cart->id])->one();
 		
 		$I->assertTrue(isset($cart));
 		
