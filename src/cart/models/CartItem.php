@@ -30,7 +30,7 @@ use ant\cart\components\CartableInterface as Cartable;
  */
 class CartItem extends \yii\db\ActiveRecord implements PayableItem
 {
-	use \ant\payment\traits\BillableTrait;
+	use \ant\payment\traits\BillableItemTrait;
 	//use \ant\traits\StatusTrait;
 	
 	public $attachments;
