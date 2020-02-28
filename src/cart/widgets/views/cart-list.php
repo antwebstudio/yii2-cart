@@ -14,11 +14,11 @@ use yii\widgets\ActiveForm;
 <table id="<?= $this->context->id ?>" class="d-sm-block d-none table table-hover table-condensed">
 	<thead>
 		<tr>
-			<th style="width:50%">Product</th>
-			<th style="width:10%">Price</th>
-			<th style="width:8%">Quantity</th>
+			<th style="width:50%"><?= Yii::t('cart', 'Product') ?></th>
+			<th style="width:10%"><?= Yii::t('cart', 'Price') ?></th>
+			<th style="width:8%"><?= Yii::t('cart', 'Quantity') ?></th>
 			<?= $this->context->renderColumnsHeader() ?>
-			<th style="width:22%" class="text-center">Subtotal</th>
+			<th style="width:22%" class="text-center"><?= Yii::t('cart', 'Subtotal') ?></th>
 			<th style="width:10%"></th>
 		</tr>
 	</thead>
@@ -52,9 +52,11 @@ use yii\widgets\ActiveForm;
 				
 						<?= $this->render('_debug-cart-list', ['item' => $item]) ?>
 						
+						<?php /*
 						<?php if (isset($item->remark)): ?>
 							<p>Remark: <?= $item->remark ?></p>
 						<?php endif ?>
+						*/?>
 					</div>
 				</div>
 			</td>
@@ -115,9 +117,11 @@ use yii\widgets\ActiveForm;
 					<?= $this->render('_debug-cart-list', ['item' => $item]) ?>
 					*/?>
 					
+					<?php /*
 					<?php if (isset($item->remark)): ?>
 						<p>Remark: <?= $item->remark ?></p>
 					<?php endif ?>
+					*/?>
 					
 					<?php if ($this->context->editable): ?>
 						<button data-action='delete' class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>		
@@ -142,11 +146,11 @@ use yii\widgets\ActiveForm;
 					<?php endif ?>
 				</div>
 				<div class="col-4 text-right">
-					<label class="d-block">Total</label>
+					<label class="d-block"><?= Yii::t('cart', 'Total') ?></label>
 					<?= Yii::$app->formatter->asCurrency($item->netTotal) ?>
 				</div>
 				<div class="col my-2 py-2">
-					<label class="d-block">Attachment</label>
+					<label class="d-block"><?= Yii::t('cart', 'Attachment') ?></label>
 					<?= $this->context->renderColumns($item, $item->id, $index) ?>
 				</div>
 			</div>

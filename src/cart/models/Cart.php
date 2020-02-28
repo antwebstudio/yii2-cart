@@ -561,6 +561,10 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
         ];
 	}
 	
+	public function getAttributeLabel($attribute) {
+		return Yii::t('cart', parent::getAttributeLabel($attribute));
+	}
+	
 	public function getOrder() {
 		return $this->hasOne(Order::className(), ['cart_id' => 'id']);
 	}

@@ -26,10 +26,10 @@ use ant\securityMobileApp\models\Customer;
         ]);
     ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		<?= Html::a('Back', ['/cart/cart'], ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('cart', $model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		<?= Html::a(Yii::t('cart', 'Back'), ['/cart/cart'], ['class' => 'btn btn-default']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end() ?>
 
 </div>

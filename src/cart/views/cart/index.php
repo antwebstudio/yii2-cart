@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use ant\widgets\Alert;
 
-$this->title = $this->context->module->getPageTitle($this->context, 'My Shopping Cart');
+$this->title = $this->context->module->getPageTitle($this->context, Yii::t('cart', 'My Shopping Cart'));
 ?>
 
 <?php if (count($cart->cartItems)): ?>
@@ -25,6 +25,6 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 	*/?>
 	<div class="empty cart text-center py-5 card">
 		<i class="fa fa-4x fa-shopping-cart mb-3"></i>
-		<h3>Your shopping cart is empty.</h3>
+		<h3><?= Yii::t('cart', 'Your shopping cart is empty.') ?></h3>
 	</div>
 <?php endif; ?>

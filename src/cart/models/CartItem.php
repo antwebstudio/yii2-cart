@@ -133,6 +133,10 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
         ];
     }
 	
+	public function getAttributeLabel($attribute) {
+		return Yii::t('cart', parent::getAttributeLabel($attribute));
+	}
+	
 	protected function getParamsForPrice() {
 		$params = isset($this->data[CartItem::DATA_CARTABLE]) ? $this->data['cartable'] : [];
 		$params = ArrayHelper::merge($params, (array) $this->data);

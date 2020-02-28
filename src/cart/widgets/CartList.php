@@ -242,7 +242,7 @@ class CartList extends \yii\base\Widget {
 			$column = $attribute;
 			
 			if (isset($column['label'])) {
-				return $column['label'];
+				return Yii::t('cart', $column['label']);
 			} else if (isset($column['attribute'])) {
 				return $model->getAttributeLabel($column['attribute']);
 			}
@@ -279,7 +279,7 @@ class CartList extends \yii\base\Widget {
 			$url = $this->getButtonParam($name, 'url');
 			$url = isset($url) ? Url::toRoute($url) : $url;
 			$options = $this->getButtonParam($name, 'options');
-			$label = $this->getButtonParam($name, 'label');
+			$label = Yii::t('cart', $this->getButtonParam($name, 'label'));
 			$isSubmitButton = $this->getButtonParam($name, 'isSubmit', false);
 			
 			return $isSubmitButton ? Html::submitButton($label, $options) : Html::a($label, $url, $options);

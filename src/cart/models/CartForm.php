@@ -13,11 +13,10 @@ class CartForm extends \ant\web\FormModel
 
 	public function models() {
         return [
+			'cart' => [
+				'class' => \ant\cart\models\Cart::class,
+			],
         ];
-    }
-
-    public function getCart() {
-        return Yii::$app->cart->getLastCart();
     }
 
     public function checkout() {
