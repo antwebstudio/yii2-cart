@@ -3,6 +3,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use ant\widgets\Alert;
+use ant\discount\widgets\DiscountCoupon;
 
 $this->title = $this->context->module->getPageTitle($this->context, Yii::t('cart', 'My Shopping Cart'));
 ?>
@@ -13,6 +14,10 @@ $this->title = $this->context->module->getPageTitle($this->context, Yii::t('cart
 			'cart' => $cart,
 		]) ?>
 	<?php \yii\widgets\Pjax::end() ?>
+	
+	<?= DiscountCoupon::widget([
+			'cart' => $cart,
+	]) ?>
 <?php else: ?>
 	<?php /*
 	<?= Alert::widget([

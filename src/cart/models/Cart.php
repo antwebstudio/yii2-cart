@@ -164,9 +164,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 
 	public static function findByEncryptedId($encryptedId) {
-		$type = Token::TOKEN_TYPE_CART_EVENT_REGISTER;
-		$id = isset(Yii::$app->encrypter) ? Yii::$app->encrypter->decrypt($encryptedId) : Yii::$app->getSecurity()->decryptByPassword($encryptedId, $type);
-		return self::findOne($id);
+		return self::findOne(self::decryptId($encryptedId));
 	}
 	
 	public static function statusOptions() {
@@ -498,19 +496,19 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
         return parent::afterFind();
 	}
 	
-	protected function decryptId($hash) {
+	protected static function decryptId($hash) {
 		$type = Token::TOKEN_TYPE_CART_EVENT_REGISTER;
 		return isset(Yii::$app->encrypter) ? Yii::$app->encrypter->decrypt($hash) : Yii::$app->getSecurity()->decryptByPassword($hash, $type);
 	}
 	
-	protected function encryptId($id) {
+	protected static function encryptId($id) {
 		$type = Token::TOKEN_TYPE_CART_EVENT_REGISTER;
 		return isset(Yii::$app->encrypter) ? Yii::$app->encrypter->encrypt($id) : Yii::$app->getSecurity()->encryptByPassword($id, $type);
 	}
 
 	public function generateToken() {
 		$queryParams = [
-            'cart' => $this->encryptId($this->id),
+            'cart' => self::encryptId($this->id),
             'tokenkey' => Token::createTokenKey()
 		];
 		
@@ -699,7 +697,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 	
 	public function getRenewRoute() {
-		return ['/cart/v1/cart/renew', 'cart' => $this->encryptId($this->id)];
+		return ['/cart/v1/cart/renew', 'cart' => self::encryptId($this->id)];
 	}
 
 	/*public function getStatusSelectedCartItems($ids) {

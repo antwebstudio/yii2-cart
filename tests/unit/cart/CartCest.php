@@ -14,6 +14,13 @@ use ant\cart\models\CartItem;
  */
 class CartCest
 {
+    protected $cartItem = [
+		'name' => 'test cart item',
+        'unit_price' => 10,
+        'quantity' => 1,
+        'unique_hash_id' => '123',
+    ];
+	
     public function _before(UnitTester $I)
     {
 		\Yii::configure(\Yii::$app, [
@@ -256,6 +263,7 @@ class CartCest
 	public function testGetIsAbleToCheckout(UnitTester $I) {
 		$cart = new Cart(['type' => 'default']);
         if (!$cart->save()) throw new \Exception(Html::errorSummary($cart));
+		$this->createCartItem($cart);
 		
 		$I->assertTrue($cart->isAbleToCheckout);
 		
@@ -267,6 +275,7 @@ class CartCest
 	public function testGetIsAbleToQuotation(UnitTester $I) {
 		$cart = new Cart(['type' => 'default']);
         if (!$cart->save()) throw new \Exception(Html::errorSummary($cart));
+		$this->createCartItem($cart);
 		
 		$I->assertTrue($cart->isAbleToQuotation);
 		
@@ -329,6 +338,14 @@ class CartCest
 		
 		$I->assertTrue(isset($duplicated));
 		$I->assertNotEquals($cart->id, $duplicated->id);
+	}
+	
+	protected function createCartItem($cart, $price = 0) {
+		$cartItem = new CartItem($this->cartItem);
+		$cartItem->unit_price = $price;
+		$cart->link('cartItems', $cartItem);
+		
+		return $cartItem;
 	}
 }
 

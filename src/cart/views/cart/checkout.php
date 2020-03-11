@@ -2,6 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use ant\discount\widgets\DiscountCoupon;
 
 $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping Cart');
 ?>
@@ -22,6 +23,10 @@ $this->title = $this->context->module->getPageTitle($this->context, 'My Shopping
 				'url' => ['/ecommerce/cart/confirm'],
 			],
 		],
+	]) ?>
+	
+	<?= DiscountCoupon::widget([
+			'cart' => $cart,
 	]) ?>
 
 <?php else: ?>
