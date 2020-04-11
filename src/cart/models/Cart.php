@@ -286,6 +286,34 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		return isset($this->token) ? $this->token->expire_at : null;
 	}
 	
+	public function addCharge($charge, $amount) {
+		$options = $this->options;
+		$name = $charge;
+		$options['charges'][$name] = [
+			'price' => $amount,
+			'name' => $name,
+			'label' => $charge,
+		];
+		$this->options = $options;
+	}
+	
+	public function getCharges() {
+		return $this->options['charges'];
+	}
+	
+	// @return object with property "label" and "price"
+	public function getCharge($name) {
+		return json_decode(json_encode($this->options['charges'][$name]));
+	}
+	
+	public function getChargesTotal() {
+		$total = 0;
+		foreach ((array) $this->options['charges'] as $charge) {
+			$total += $charge['price'];
+		}
+		return $total;
+	}
+	
 	public function addQuoteItem(CartableInterface $item, $quantity = 1, $isLock = false, $attributes = []) {
 		return $this->_addItem(CartItem::TYPE_QUOTE, $item, $quantity, $isLock, $attributes);
 	}
@@ -382,7 +410,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	}
 	
 	public function getCalculatedNetTotal() {
-		return Currency::rounding($this->getCartOptionsTotalPrice() + $this->getSubtotal() + $this->getServiceCharges() - $this->getDiscountAmount() + $this->getTaxCharges());
+		return Currency::rounding($this->getChargesTotal() + $this->getCartOptionsTotalPrice() + $this->getSubtotal() + $this->getServiceCharges() - $this->getDiscountAmount() + $this->getTaxCharges());
 	}
 	
 	public function getDueAmount() {

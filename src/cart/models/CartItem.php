@@ -217,7 +217,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getNetTotal() {
-		return Currency::rounding($this->getDiscountedUnitPrice() * $this->quantity);
+		return Currency::rounding($this->getDiscountedUnitPrice() * $this->quantity - $this->additional_discount);
 	}
 	
 	public function getAmount() {
