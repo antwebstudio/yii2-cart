@@ -185,6 +185,11 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 		}
 	}
 	
+	public function withRemark($remark) {
+		$this->remark = $remark;
+		return $this;
+	}
+	
 	public function getImage() {
 		if (isset($this->item->image)) return $this->item->image;
 	}

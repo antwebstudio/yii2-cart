@@ -318,6 +318,24 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		return $this->_addItem(CartItem::TYPE_QUOTE, $item, $quantity, $isLock, $attributes);
 	}
 	
+	public function newItem(CartableInterface $item, $quantity = 1, $attributes = []) {
+		$cartItem = new CartItem([
+			'cart_id' => $this->id,
+			'scenario' => CartItem::SCENARIO_ADD_TO_CART,
+		]);
+		
+		$cartItem->attributes = $attributes;
+		$cartItem->name = $item->getName();
+		$cartItem->unique_hash_id = $item->getUniqueHashId();
+		$cartItem->item_class_id = ModelClass::getClassId($item);
+		$cartItem->item_id = $item->getId();
+		$cartItem->quantity = $quantity;
+			
+		$cartItem->refreshPrice();
+		
+		return $cartItem;
+	}
+	
 	public function addItem(CartableInterface $item, $quantity = 1, $isLock = false, $attributes = []) {
 		return $this->_addItem(CartItem::TYPE_ORDER, $item, $quantity, $isLock, $attributes);
 	}
