@@ -345,4 +345,34 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 			],
 		];
 	}
+	
+	public function withParent($cartItem) {
+		$this->parent_id = $cartItem->id;
+		return $this;
+	}
+	
+	/*public function getAddonPrice() {
+		$price = 0;
+		if (isset($this->data['addon'])) {
+			foreach ($this->data['addon'] as $name => $addon) {
+				$price += isset($addon['price']) ? $addon['price'] : 0;
+			}
+		}
+		return $price;
+	}
+	
+	protected function addAddon($addon, $price) {
+		$data = $this->data;
+		
+		$addonCollection = isset($data['addon']) ? $data['addon'] : [];
+		$addonCollection[$addon] = [
+			'label' => $addon,
+			'price'	=> $price,
+		];
+		$data['addon'] = $addonCollection;
+		
+		$this->data = $data;
+		
+		return $this;
+	}*/
 }

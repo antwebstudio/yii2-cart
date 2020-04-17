@@ -109,6 +109,9 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	
 	public function events() {
 		return [
+			self::EVENT_BEFORE_VALIDATE => function() {
+				$this->net_total = $this->netTotal;
+			},
 			//self::EVENT_AFTER_FIND => 'afterFind',
 			self::EVENT_AFTER_INSERT => 'afterInsert',
 		];
@@ -303,13 +306,17 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	
 	// @return object with property "label" and "price"
 	public function getCharge($name) {
-		return json_decode(json_encode($this->options['charges'][$name]));
+		if (isset($this->options['charges'][$name])) {
+			return json_decode(json_encode($this->options['charges'][$name]));
+		}
 	}
 	
 	public function getChargesTotal() {
 		$total = 0;
-		foreach ((array) $this->options['charges'] as $charge) {
-			$total += $charge['price'];
+		if (isset($this->options['charges'])) {
+			foreach ((array) $this->options['charges'] as $charge) {
+				$total += $charge['price'];
+			}
 		}
 		return $total;
 	}
