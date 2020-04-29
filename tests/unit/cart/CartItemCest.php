@@ -67,7 +67,9 @@ class CartItemCest
 	}
 
 	// For request quotation, unit_price of CartItem is not required.
-	public function testValidateOnScenarioRequestQuotation(UnitTester $I) {
+	public function testValidateOnScenarioRequestQuotation(UnitTester $I, $scenario) {
+		$scenario->skip('Skip test related to quotation. ');
+		
 		$cartItem = new CartItem(['scenario' => CartItem::SCENARIO_REQUEST_QUOTATION]);
 		$cartItem->attributes = [
 			'quantity' => 1,
@@ -144,7 +146,9 @@ class CartItemCest
 	// When add to quotation
 	// When unit price of item is null
 	// Expected result: no exception is thrown
-	public function testRefreshUnitPriceWhenAddToQuotation(UnitTester $I) {
+	public function testRefreshUnitPriceWhenAddToQuotation(UnitTester $I, $scenario) {
+		$scenario->skip('Skip test related to quotation. ');
+		
 		\Yii::configure(\Yii::$app->cart, [
 			'types' => [
 				'product' => [

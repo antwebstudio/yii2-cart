@@ -5,7 +5,7 @@ return [
 	'aliases' => [
 		'api' => dirname(dirname(__DIR__)).'/src/api',
 		'common/config' => __DIR__, // dirname(dirname(__DIR__)).'/vendor/inspirenmy/yii2-core/src/common/config',
-		//'common/modules/moduleManager' => dirname(dirname(__DIR__)).'/vendor/inspirenmy/yii2-core/src/common/modules/moduleManager',
+		'ant/moduleManager' => dirname(dirname(__DIR__)).'/vendor/antweb/yii2-core/src/moduleManager',
 		'vendor' => dirname(dirname(__DIR__)).'/vendor',
 		//'@common/migrations' => '@vendor/inspirenmy/yii2-core/src/common/migrations',
         '@common/rbac/views' => '@vendor/inspirenmy/yii2-core/src/common/rbac/views',
@@ -28,12 +28,9 @@ return [
             'charset' => 'utf8',
         ],
         'moduleManager' => [
-            'class' => 'ant\moduleManager\components\ModuleManager',
+            'class' => 'ant\moduleManager\ModuleManager',
 			'moduleAutoloadPaths' => [
-				'@ant', 
-				'@vendor/inspirenmy/yii2-ecommerce/src/common/modules', 
-				'@vendor/inspirenmy/yii2-user/src/common/modules',
-				'@vendor/inspirenmy/yii2-core/src/common/modules',
+				'@root/src', 
 			],
         ],
         /*'authManager' => [

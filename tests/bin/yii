@@ -23,13 +23,15 @@ $config = yii\helpers\ArrayHelper::merge(
 error_reporting(E_ALL); ini_set('display_errors', 1);
 define('YII_DEBUG', true);
 
+defined('YII_PROJECT_BASE_PATH') or define('YII_PROJECT_BASE_PATH', dirname(dirname(__DIR__)));
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', YII_PROJECT_BASE_PATH);
+
 require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 require_once dirname(dirname(__DIR__)).'/vendor/yiisoft/yii2/Yii.php';
 
 Yii::setAlias('@common', dirname(dirname(__DIR__)).'/src/common');
 Yii::setAlias('@tests', dirname(__DIR__));
 
-$config = require dirname(__DIR__).'/config/unit.php';
-
+$config = \ant\base\ConfigBuilder::load(\ant\base\ConfigBuilder::TEST);
 $application = new yii\console\Application($config);
 $exitCode = $application->run();

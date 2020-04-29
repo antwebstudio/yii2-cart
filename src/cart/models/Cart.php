@@ -289,13 +289,14 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		return isset($this->token) ? $this->token->expire_at : null;
 	}
 	
-	public function addCharge($charge, $amount) {
+	public function addCharge($charge, $amount, $isEstimated = false) {
 		$options = $this->options;
 		$name = $charge;
 		$options['charges'][$name] = [
 			'price' => $amount,
 			'name' => $name,
 			'label' => $charge,
+			'isEstimated' => $isEstimated,
 		];
 		$this->options = $options;
 	}
@@ -337,7 +338,9 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		$cartItem->item_class_id = ModelClass::getClassId($item);
 		$cartItem->item_id = $item->getId();
 		$cartItem->quantity = $quantity;
-			
+		
+		$cartItem->setCartableData($item->getCartItemCustomData());
+		
 		$cartItem->refreshPrice();
 		
 		return $cartItem;
@@ -460,7 +463,13 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	
 	public function getDiscountAmount() {
 		// @TODO: implement cart discount rule
-		if (isset(Yii::$app->discount)) {
+		if (isset($this->options['discount']) && count($this->options['discount'])) {
+			$amount = 0;
+			foreach ($this->options['discount'] as $discount) {
+				$amount += isset($discount['price']) && trim($discount['price']) != '' ? $discount['price'] : 0;
+			}
+			return $amount;
+		} else if (isset(Yii::$app->discount)) {
 			$discount = Yii::$app->discount->getDiscountForCart($this);
 			if ($discount instanceof Discount) {
 				return $discount->of($this->getSubtotal());

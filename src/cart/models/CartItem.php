@@ -31,6 +31,7 @@ use ant\cart\components\CartableInterface as Cartable;
 class CartItem extends \yii\db\ActiveRecord implements PayableItem
 {
 	use \ant\payment\traits\BillableItemTrait;
+	use \ant\discount\traits\Discountable;
 	//use \ant\traits\StatusTrait;
 	
 	public $attachments;
@@ -103,9 +104,11 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
             [['cart_id', 'item_id', 'quantity', 'discount_type', 'status'], 'integer'],
 			[['quantity'], 'required'],
 			[['unit_price'], 'required', 'except' => [self::SCENARIO_ADD_TO_QUOTATION, self::SCENARIO_REQUEST_QUOTATION]],
-            [['unit_price', 'discount_value'], 'number'],
+			
+            [['discount_value', 'discount_percent', 'discount_amount'], 'default', 'value' => 0],
+            [['unit_price', 'discount_value', 'discount_percent', 'discount_amount'], 'number', 'skipOnEmpty' => false],
 			[['created_at', 'currency', 'is_locked', 'remark', 'attachments', 'attachments2'], 'safe', 'on' => [self::SCENARIO_REQUEST_QUOTATION, self::SCENARIO_ADD_TO_CART, self::SCENARIO_CHECKOUT]],
-			[['created_at', 'currency', 'is_locked', 'remark', 'attachments', 'attachments2'], 'safe'],
+			[['created_at', 'currency', 'is_locked', 'remark', 'attachments', 'attachments2', 'additional_discount'], 'safe'],
 			[['seller_remark'], 'safe', 'on' => self::SCENARIO_ADMIN_UPDATE],
             [['name'], 'string', 'max' => 200],
             [['url', 'shipping_tracking_code'], 'string', 'max' => 255],
@@ -137,6 +140,12 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 		return Yii::t('cart', parent::getAttributeLabel($attribute));
 	}
 	
+	public function setCartableData($cartableData) {
+		$data = $this->data;
+		$data[self::DATA_CARTABLE] = $cartableData;
+		$this->data = $data;
+	}
+	
 	protected function getParamsForPrice() {
 		$params = isset($this->data[CartItem::DATA_CARTABLE]) ? $this->data['cartable'] : [];
 		$params = ArrayHelper::merge($params, (array) $this->data);
@@ -149,7 +158,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 		if ($this->item instanceof Cartable) {
 			$this->item->setCartItemCustomData($this->getParamsForPrice());
 			$this->unit_price = $this->item->getPrice($this->getParamsForPrice());
-			
+					
 			if (!isset($this->unit_price)) {
 				if ($this->scenario == self::SCENARIO_ADD_TO_QUOTATION && $this->isCanAddToQuotation) {
 					$this->unit_price = 0;
@@ -207,10 +216,6 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 		return Currency::rounding($this->unit_price);
 	}
 	
-	public function getDiscountedUnitPrice() {
-		return Currency::rounding($this->getUnitPrice() - $this->getDiscountAmount());
-	}
-	
 	public function getDiscountedAmount() {
 		// Different with net total, this is used to calculated service charges, hence not included service charges
 		// while netTotal will included service charges
@@ -226,7 +231,7 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getAmount() {
-		if (YII_DEBUG) throw new \Exception('Deprecated method');
+		deprecate();
 		return Currency::rounding($this->getUnitPrice() * $this->quantity);
 	}
 	
@@ -239,13 +244,8 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	}
 	
 	public function getDiscountPrice() {
-		if (YII_DEBUG) throw new \Exception('Deprecated');
+		deprecate();
 		return $this->getDiscountAmount();
-	}
-	
-	public function getDiscountAmount() {
-		$discount = new \ant\discount\helpers\Discount($this->discount_value, $this->discount_type);
-		return $discount->of($this->unitPrice);
 	}
 	
 	public function getDescription() {
@@ -266,20 +266,6 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 
 	public function getIsLocked() {
 		return $this->is_locked || isset($this->cart->order);
-	}
-	
-	public function setDiscount($discount, $discountType = 0) {
-		if ($discount instanceof \ant\discount\helpers\Discount) {
-			$this->discount_value = $discount->value;
-			$this->discount_type = $discount->type;
-		} else {
-			$this->discount_value = $discount;
-			$this->discount_type = $discountType;
-		}
-	}
-	
-	public function getDiscount() {
-		return new \ant\discount\helpers\Discount($this->discount_value, $this->discount_type);
 	}
 	
 	public function deductAvailableQuantity($quantity) {

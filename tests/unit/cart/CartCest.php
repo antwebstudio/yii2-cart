@@ -272,7 +272,9 @@ class CartCest
 		$I->assertFalse($cart->isAbleToCheckout);
 	}
 	
-	public function testGetIsAbleToQuotation(UnitTester $I) {
+	public function testGetIsAbleToQuotation(UnitTester $I, $scenario) {
+		$scenario->skip('Skip test related to quotation. ');
+		
 		$cart = new Cart(['type' => 'default']);
         if (!$cart->save()) throw new \Exception(Html::errorSummary($cart));
 		$this->createCartItem($cart);
@@ -338,6 +340,19 @@ class CartCest
 		
 		$I->assertTrue(isset($duplicated));
 		$I->assertNotEquals($cart->id, $duplicated->id);
+	}
+	
+	public function testAddCharge(UnitTester $I) {
+		$cart = new Cart(['type' => 'default']);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		$cartId = $cart->id;
+		
+		$cart->addCharge('Delivery Charges', 3);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		
+		$cart->refresh();
+		
+		$I->assertEquals(3, $cart->getCharge('Delivery Charges')->price);
 	}
 	
 	protected function createCartItem($cart, $price = 0) {
