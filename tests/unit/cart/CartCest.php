@@ -355,6 +355,42 @@ class CartCest
 		$I->assertEquals(3, $cart->getCharge('Delivery Charges')->price);
 	}
 	
+	// Cart[options][charges][Delivery Charges][price]
+	
+	/**
+	  * @example [0, ""]
+	  * @example [0, 0]
+	  * @example [2, 2]
+	  */
+	public function testUpdateCharge(UnitTester $I, \Codeception\Example $example) {
+		$expected = $example[0];
+		$price = $example[1];
+		
+		$cart = new Cart(['type' => 'default']);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		$cartId = $cart->id;
+		
+		$cart->addCharge('Delivery Charges', 3);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		
+		$cart->refresh();
+		
+		// Update charge
+		$cart->load([
+			'Cart' => [
+				'options' => [
+					'charges' => [
+						'Delivery Charges' => ['price' => $price],
+					],
+				],
+			],
+		]);
+		if (!$cart->save()) throw new \Exception(print_r($cart->errors, 1));
+		
+		$I->assertEquals($expected, $cart->getCharge('Delivery Charges')->price);
+	}
+	
+	
 	protected function createCartItem($cart, $price = 0) {
 		$cartItem = new CartItem($this->cartItem);
 		$cartItem->unit_price = $price;

@@ -57,9 +57,8 @@ class CartItem extends \yii\db\ActiveRecord implements PayableItem
 	public function behaviors() {
 		$behaviors = [
 			[
-				'class' => \ant\behaviors\SerializeBehavior::className(),
+				'class' => \ant\behaviors\SerializableAttribute::className(),
 				'attributes' => ['data'],
-				'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
 			],
 			[
 				'class' => \ant\behaviors\AttachBehaviorBehavior::className(),

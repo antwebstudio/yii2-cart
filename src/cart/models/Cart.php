@@ -87,9 +87,8 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 				],
             ],
             [
-                'class' => \ant\behaviors\SerializeBehavior::className(),
+                'class' => \ant\behaviors\SerializableAttribute::class,
                 'attributes' => ['data', 'options'],
-                'serializeMethod' => \ant\behaviors\SerializeBehavior::METHOD_JSON,
             ],
         ];
     }
@@ -308,7 +307,15 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	// @return object with property "label" and "price"
 	public function getCharge($name) {
 		if (isset($this->options['charges'][$name])) {
-			return json_decode(json_encode($this->options['charges'][$name]));
+			$price = $this->options['charges'][$name]['price'];
+			if (!isset($price) || trim($price) == '') {
+				$options = $this->options;
+				$options['charges'][$name]['price'] = 0;
+				
+				$this->options = $options;
+			}
+			$charge = json_decode(json_encode($this->options['charges'][$name]));
+			return $charge;
 		}
 	}
 	
@@ -316,7 +323,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 		$total = 0;
 		if (isset($this->options['charges'])) {
 			foreach ((array) $this->options['charges'] as $charge) {
-				$total += $charge['price'];
+				$total += isset($charge['price']) && trim($charge['price']) != '' ? $charge['price'] : 0;
 			}
 		}
 		return $total;
