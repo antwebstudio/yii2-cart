@@ -89,7 +89,11 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
             [
                 'class' => \ant\behaviors\SerializableAttribute::class,
                 'attributes' => ['data', 'options'],
-            ],
+			],
+			[
+				'class' => \ant\behaviors\EventHandlerBehavior::class,
+				'events' => $this->events(),
+			],
         ];
     }
 	
@@ -100,9 +104,9 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 	public function init() {
 		if (!isset($this->type)) $this->type = self::TYPE_DEFAULT;
 
-        foreach ($this->events() as $event => $handler) {
-            $this->on($event, is_string($handler) ? [$this, $handler] : $handler);
-        }
+        // foreach ($this->events() as $event => $handler) {
+        //     $this->on($event, is_string($handler) ? [$this, $handler] : $handler);
+        // }
 		return parent::init();
 	}
 	
@@ -111,8 +115,14 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 			self::EVENT_BEFORE_VALIDATE => function() {
 				$this->net_total = $this->netTotal;
 			},
+			self::EVENT_BEFORE_INSERT => function($event) {
+				$this->net_total = $this->netTotal;
+			},
+			self::EVENT_BEFORE_UPDATE => function($event) {
+				$this->net_total = $this->netTotal;
+			},
 			//self::EVENT_AFTER_FIND => 'afterFind',
-			self::EVENT_AFTER_INSERT => 'afterInsert',
+			self::EVENT_AFTER_INSERT => [$this, 'afterInsert'],
 		];
 	}
 	
@@ -591,6 +601,7 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
     public function afterInsert($event)
 	{
         $this->tokenQueryParams = $this->generateToken()->queryParams;
+		$this->refresh();
 	}
 	
     /**
