@@ -86,13 +86,14 @@ class Cart extends \yii\db\ActiveRecord implements Billable, Expirable
 					'created_at', 'updated_at',
 				],
             ],
-            [
-                'class' => \ant\behaviors\SerializableAttribute::class,
-                'attributes' => ['data', 'options'],
-			],
 			[
 				'class' => \ant\behaviors\EventHandlerBehavior::class,
 				'events' => $this->events(),
+			],
+			// SerializableAttribute behavior should always the last behavior, so that attribute is serialized only if it is no more used by any other behaviors
+            [
+                'class' => \ant\behaviors\SerializableAttribute::class,
+                'attributes' => ['data', 'options'],
 			],
         ];
     }
